@@ -1,0 +1,160 @@
+@use "../../styles/_variables.scss" as vars;
+
+.chats-list {
+    &__container {
+        width: 310px;
+        min-width: 310px;
+        height: 100%;
+        background-color: #fbfbfb;
+        padding: 21px 10px 0 10px;
+    }
+
+    &__profile-link {
+        display: block;
+        color: vars.$gray-color;
+        font-size: 12px;
+        line-height: 12px;
+        font-family: "Inter";
+        margin-left: auto;
+        text-align: right;
+        margin-bottom: 23px;
+    }
+
+    &__search {
+        background-color: vars.$gray-color--medium;
+        padding: 10px;
+        border-radius: 5px;
+        width: 100%;
+        position: relative;
+        font-size: 12px;
+        line-height: 12px;
+        color: vars.$gray-color;
+        margin-bottom: 14px;
+    }
+
+    &__search::placeholder {
+        content: "Поиск";
+        text-align: center;
+        background-image: url("../../assets/icons/magnifier.svg");
+        background-repeat: no-repeat;
+        background-position: 38% 0px;
+    }
+
+    &__persons-container {
+        height: calc(100vh - 104px);
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+    &__persons-container::-webkit-scrollbar {
+        width: 3px;
+    }
+    &__persons-container::-webkit-scrollbar-thumb {
+        background-color: rgba(219, 112, 147, 0.5);
+    }
+
+    &__persons-container::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+}
+
+.profile-link__image {
+    margin-left: 4px;
+}
+
+.persons {
+    &__item {
+        padding: 12px 0;
+        border-top: vars.$gray-color solid 1px;
+        cursor: pointer;
+        display: flex;
+        height: 67px;
+        position: relative;
+
+        &:last-child {
+            border-bottom: vars.$gray-color solid 1px;
+        }
+
+        .item {
+            &__avatar {
+                width: 47px;
+                height: 47px;
+                background-color: vars.$gray-color--medium;
+                border-radius: 50%;
+                margin-right: 10px;
+                object-fit: cover;
+            }
+
+            &__title {
+                margin-bottom: 4px;
+                font-size: 13px;
+                line-height: 13px;
+            }
+
+            &__text-container {
+                width: 193px;
+                margin-right: 16px;
+            }
+
+            &__text {
+                font-size: 12px;
+                line-height: 14px;
+                color: vars.$gray-color;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &--bold {
+                    color: #000000;
+                }
+            }
+
+            &__additional {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-end;
+                position: absolute;
+                padding: 12px 5px;
+                right: 0;
+                top: 0;
+
+                .additional {
+                    &__new-messenges-container {
+                        width: 20px;
+                        height: 20px;
+                        background-color: vars.$primary-color;
+                        border-radius: 50%;
+                        display: flex;
+                        position: relative;
+                    }
+
+                    &__new-messenges {
+                        position: absolute;
+                        width: 12px;
+                        height: 12px;
+                        font-size: 11px;
+                        line-height: 12px;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        text-align: center;
+                        align-self: center;
+                        color: #ffffff;
+                    }
+
+                    &__date {
+                        font-size: 9px;
+                        line-height: 13px;
+                        color: vars.$gray-color;
+                        margin-bottom: 12px;
+                    }
+                }
+            }
+        }
+    }
+
+    &__item:hover {
+        background-color: vars.$primary-color--pale;
+    }
+}
