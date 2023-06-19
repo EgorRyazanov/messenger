@@ -1,0 +1,11 @@
+@use "../../styles/_variables.scss" as vars;
+
+.link {
+    font-size: 13px;
+    line-height: 13px;
+    color: vars.$primary-color;
+
+    &:hover {
+        color: vars.$primary-color--hover;
+    }
+}

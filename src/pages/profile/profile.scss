@@ -1,0 +1,80 @@
+@use "../../styles/_variables.scss" as vars;
+
+.profile {
+    &__navbar {
+        width: 64px;
+        height: 100vh;
+        background-color: #fbfbfb;
+        border-right: solid 1px vars.$gray-color--light;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .navbar {
+            &__back-button {
+                background-color: vars.$primary-color;
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: vars.$primary-color--hover;
+                }
+            }
+        }
+    }
+
+    &__container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        flex-direction: column;
+        padding-top: 30px;
+    }
+
+    &__avatar {
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        background-color: vars.$gray-color--medium;
+        border-radius: 50%;
+        margin-bottom: 21px;
+    }
+
+    &__name {
+        margin-bottom: 30px;
+    }
+
+    &__data {
+        width: 510px;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+
+        .input--last {
+            margin-bottom: 30px;
+        }
+    }
+
+    &__form {
+        width: 100%;
+    }
+
+    &__link {
+        padding: 10px 0;
+        border-bottom: vars.$gray-color--light 1px solid;
+
+        &--exit {
+            color: #ff0000;
+        }
+    }
+
+    &__submit {
+        display: block;
+        margin: 0 auto;
+    }
+}
