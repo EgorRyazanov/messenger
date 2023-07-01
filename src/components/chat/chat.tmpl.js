@@ -44,8 +44,7 @@ export const chatTemplate = `
             </div>
             <div class="chat__footer">
                 {{{messageSettingButton}}}
-                <input class="footer__message" placeholder="Сообщение" name="message">
-                {{{sendButton}}}
+                {{{form}}}
             </div>
         <div>
     {{else}}

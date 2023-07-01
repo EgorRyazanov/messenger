@@ -3,7 +3,7 @@ import { Login } from "./pages/login-page";
 import { Register } from "./pages/register-page";
 import { Main } from "./pages/main-page";
 import { data_chats, data_profile } from "./utils/constants";
-import { Profile } from "./pages/profile";
+import { Profile } from "./pages/profile-page";
 import { Error } from "./pages/error-page";
 
 document.addEventListener("DOMContentLoaded", () => {

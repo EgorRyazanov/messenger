@@ -18,13 +18,13 @@ export class Button extends Block {
 }
 
 export class ButtonIcon extends Block {
-    constructor({ img, url = "", classNames = "" }) {
-        super({ img, url, classNames });
+    constructor({ img, url = "", classNames = "", type = "button" }) {
+        super({ img, url, classNames, type });
     }
 
     render() {
         return this.compile(
-            `<button {{#if url}} onclick="window.location.href = '{{url}}'" {{/if}} class="icon-button {{classNames}}">
+            `<button type={{type}} {{#if url}} onclick="window.location.href = '{{url}}'" {{/if}} class="icon-button {{classNames}}">
                 <img src='{{img}}' alt="Кнопка">
             </button>`,
             this.props

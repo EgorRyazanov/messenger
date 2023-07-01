@@ -70,17 +70,23 @@ export const handleValidateInputs = (name, value, self) => {
         if (!validateRepeatPassword(value, password)) {
             message = "Пароли не совпадают";
         }
+    } else if (name === "message") {
+        if (!value) {
+            elementProps.inputClasses = elementProps.inputClasses + " input--error";
+            elementProps.value = "";
+            return true;
+        }
     }
     if (message) {
-        elementProps.inputClasses = elementProps.inputClasses + "input--error";
+        elementProps.inputClasses = elementProps.inputClasses + " input--error";
         elementProps.error = message;
-        elementProps.inputErrorClasses = "input__error--active";
+        elementProps.inputErrorClasses = elementProps.inputErrorClasses + " input__error--active";
         elementProps.value = "";
         return true;
     }
     elementProps.value = value;
-    elementProps.inputClasses = "";
+    elementProps.inputClasses = elementProps.inputClasses.replace("input--error", "").trim();
     elementProps.error = "";
-    elementProps.inputErrorClasses = "";
+    elementProps.inputErrorClasses = elementProps.inputErrorClasses.replace("input__error--active", "").trim();
     return false;
 };

@@ -87,6 +87,7 @@ export class Profile extends Block {
 
         if (isConfirm) {
             window.location.href = "/profile";
+            self.removeEvents();
         }
     }
 

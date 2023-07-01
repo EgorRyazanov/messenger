@@ -52,6 +52,7 @@ export class Register extends Block {
 
         if (isConfirm) {
             window.location.href = "/";
+            self.removeEvents();
         }
     }
 

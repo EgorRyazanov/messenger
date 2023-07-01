@@ -5,7 +5,13 @@ import { Block } from "../../utils/block";
 export class Error extends Block {
     constructor(props) {
         super({
-            linkBack: new Link({ text: "Назад к чатам", url: "/" }),
+            linkBack: new Link({
+                text: "Назад к чатам",
+                url: "/",
+                events: {
+                    click: () => this.removeEvents(),
+                },
+            }),
             ...props,
         });
     }
