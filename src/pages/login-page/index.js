@@ -47,6 +47,7 @@ export class Login extends Block {
 
         if (isConfirm) {
             window.location.href = "/";
+            self.removeEvents();
         }
     }
 

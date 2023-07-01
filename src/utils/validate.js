@@ -42,7 +42,6 @@ export const validatePhone = (phone) => {
 };
 
 export const validateRepeatPassword = (repeatPassword, password) => {
-    console.log(password);
     if (repeatPassword) {
         return repeatPassword === password;
     }
@@ -50,9 +49,7 @@ export const validateRepeatPassword = (repeatPassword, password) => {
 };
 
 export const handleValidateInputs = (name, value, self) => {
-    console.log(name);
     const input = self.children.form.children.inputs.find((input) => input.props.name === name);
-    console.log(input, input.props);
     const elementProps = input.props;
     let message = null;
     if (name === "login" && !validateLogin(value)) {
