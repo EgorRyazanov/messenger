@@ -19,49 +19,31 @@ document.addEventListener("DOMContentLoaded", () => {
             case "/register": {
                 return new Register();
             }
+            case "/profile/edit": {
+                return new Profile({ profile: data_profile, url: "/profile" });
+            }
+            case "/profile/change-password": {
+                return new Profile({ profile: data_profile, url: "/profile" });
+            }
+            case "/profile": {
+                return new Profile({ profile: data_profile, url: "/" });
+            }
+            case "/": {
+                return new Main({ chats: data_chats, activeChat: "" });
+            }
             default: {
-                return new Login();
+                const pathname = window.location.pathname.slice(1);
+                const activeChat = data_chats.find((person) => person.id === pathname);
+                if (activeChat) {
+                    return new Main({ activeChat, chats: data_chats });
+                }
+                return new Error({ title: "404" });
             }
         }
     };
 
-    const page = getPage().getContent();
+    const page = getPage();
     root.innerHTML = "";
-    root.append(page);
+    root.append(page.getContent());
     page.dispatchComponentDidMount();
-    // const getPage = () => {
-    //     switch (window.location.pathname) {
-    //         case "/login": {
-    //             return Login();
-    //         }
-    //         case "/register": {
-    //             return Register();
-    //         }
-    //         case "/": {
-    //             return Main(data_chats, "");
-    //         }
-    //         case "/profile/edit": {
-    //             return Profile(data_profile, "/profile");
-    //         }
-    //         case "/profile/change-password": {
-    //             return Profile(data_profile, "/profile");
-    //         }
-    //         case "/profile": {
-    //             return Profile(data_profile, "/");
-    //         }
-    //         case "/server-error": {
-    //             return Error("500");
-    //         }
-    //         default: {
-    //             const pathname = window.location.pathname.slice(1);
-    //             const activeChat = data_chats.find((person) => person.id === pathname);
-    //             if (activeChat) {
-    //                 return Main(data_chats, activeChat);
-    //             }
-    //             return Error("404");
-    //         }
-    //     }
-    // };
-
-    // root.innerHTML = getPage();
 });

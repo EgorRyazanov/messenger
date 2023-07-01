@@ -1,6 +1,16 @@
-import Handlebars from "handlebars";
-
 import { userErrorTemplate } from "./error-page";
 import { Link } from "../../components/link";
+import { Block } from "../../utils/block";
 
-export const Error = (title) => Handlebars.compile(userErrorTemplate)({ linkBack: Link({ text: "Назад к чатам", url: "/" }), title });
+export class Error extends Block {
+    constructor(props) {
+        super({
+            linkBack: new Link({ text: "Назад к чатам", url: "/" }),
+            ...props,
+        });
+    }
+
+    render() {
+        return this.compile(userErrorTemplate, this.props);
+    }
+}

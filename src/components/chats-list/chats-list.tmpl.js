@@ -26,7 +26,6 @@ Handlebars.registerHelper("ifIdEquals", function (id, opts) {
 });
 
 Handlebars.registerHelper("ifLastPerson", function (array, opts) {
-    console.log(array[array.length - 1].author);
     if (array && array.length > 0) {
         if (array[array.length - 1].author !== "Вы") {
             return opts.fn(array[array.length - 1].message);

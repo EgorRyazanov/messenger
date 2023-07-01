@@ -1,13 +1,6 @@
-// import Handlebars from "handlebars";
-
-// import { Button } from "../../components/button";
-// import { Input } from "../../components/input";
-// import { Link } from "../../components/link";
-// import { registerPageTemplate } from "./register-page.tmpl";
-
+import { registerPageTemplate } from "./register-page.tmpl";
 import { Button } from "../../components/button";
 import { Input } from "../../components/input";
-import { loginPageTemplate } from "../login-page/login-page.tmpl";
 import { Link } from "../../components/link";
 import { Block } from "../../utils/block";
 import { Form } from "../../components/form";
@@ -17,21 +10,26 @@ export class Register extends Block {
     constructor(props = {}) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
-        this.handleValidateInputs = handleValidateInputs.bind(this);
+        this.handleValidateInputs = handleValidateInputs;
     }
 
     init() {
         const inputs = [
-            new Input({ name: "login", labelValue: "Логин", isAutofocus: true }),
-            new Input({ name: "password", labelValue: "Пароль", inputContainerClasses: "input--last", type: "password" }),
+            new Input({ name: "email", labelValue: "Почта *", type: "email", isAutofocus: true }),
+            new Input({ name: "login", labelValue: "Логин *" }),
+            new Input({ name: "first_name", labelValue: "Имя *" }),
+            new Input({ name: "second_name", labelValue: "Фамилия *" }),
+            new Input({ name: "phone", labelValue: "Телефон *" }),
+            new Input({ name: "password", labelValue: "Пароль *", type: "password" }),
+            new Input({ name: "repeat_password", labelValue: "Пароль (ещё раз) *", inputContainerClasses: "input--last", type: "password" }),
         ];
         const formEvents = { submit: (e) => this.onSubmit(e, this), focusout: (e) => this.handleValidateInputs(e.target.name, e.target.value, this) };
         this.children.form = new Form({
             inputs,
             events: formEvents,
-            link: new Link({ text: "Нет аккаунта?", url: "/register" }),
+            link: new Link({ text: "Войти", url: "/login" }),
             title: "Регистрация",
-            button: new Button({ text: "Войти", type: "submit" }),
+            button: new Button({ text: "Зарегистрироваться", url: "/" }),
         });
     }
 
@@ -58,19 +56,6 @@ export class Register extends Block {
     }
 
     render() {
-        return this.compile(loginPageTemplate, this.props);
+        return this.compile(registerPageTemplate, this.props);
     }
 }
-
-// export const Register = () =>
-//     Handlebars.compile(registerPageTemplate)({
-//         button: Button({ text: "Зарегистрироваться", url: "/" }),
-//         inputEmail: Input({ name: "email", labelValue: "Почта *", type: "email" }),
-//         inputLogin: Input({ name: "login", labelValue: "Логин *" }),
-//         inputName: Input({ name: "first_name", labelValue: "Имя *" }),
-//         inputSecondName: Input({ name: "second_name", labelValue: "Фамилия *" }),
-//         inputPhone: Input({ name: "phone", labelValue: "Телефон *" }),
-//         inputPassword: Input({ name: "password", labelValue: "Пароль *", type: "password" }),
-//         inputRepeatPassword: Input({ name: "repeatPassword", labelValue: "Пароль (ещё раз) *", inputClasses: "input--last", type: "password" }),
-//         link: Link({ text: "Войти", url: "/login" }),
-//     });

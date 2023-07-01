@@ -1,7 +1,12 @@
-import Handlebars from "handlebars";
-
+import { Block } from "../../utils/block";
 import { chatsListTemplate } from "./chats-list.tmpl";
 
-export const ChatsList = (chats) => {
-    return Handlebars.compile(chatsListTemplate)({ chats });
-};
+export class ChatsList extends Block {
+    constructor({ chats }) {
+        super({ chats });
+    }
+
+    render() {
+        return this.compile(chatsListTemplate, this.props);
+    }
+}

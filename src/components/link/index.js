@@ -4,7 +4,6 @@ import { Block } from "../../utils/block";
 export class Link extends Block {
     constructor({ text, url = "/", linkClasses = "" }) {
         const props = { text, url, linkClasses };
-        console.log(props);
         super(props);
     }
 

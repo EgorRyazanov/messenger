@@ -1,4 +1,3 @@
-import Handlebars from "handlebars";
 import "./button.scss";
 import { Block } from "../../utils/block";
 
@@ -18,8 +17,17 @@ export class Button extends Block {
     }
 }
 
-export const ButtonIcon = ({ img, url = "", classNames = "" }) =>
-    Handlebars.compile(`
-    <button {{#if url}} onclick="window.location.href = '{{url}}'" {{/if}} class="icon-button {{classNames}}">
-        <img src='{{img}}' alt="Кнопка">
-    </button>`)({ classNames, url, img });
+export class ButtonIcon extends Block {
+    constructor({ img, url = "", classNames = "" }) {
+        super({ img, url, classNames });
+    }
+
+    render() {
+        return this.compile(
+            `<button {{#if url}} onclick="window.location.href = '{{url}}'" {{/if}} class="icon-button {{classNames}}">
+                <img src='{{img}}' alt="Кнопка">
+            </button>`,
+            this.props
+        );
+    }
+}

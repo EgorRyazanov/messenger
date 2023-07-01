@@ -62,6 +62,13 @@
 
     &__form {
         width: 100%;
+        box-shadow: none;
+        border-radius: none;
+        padding: 0;
+    }
+
+    &__button--hidden {
+        display: none;
     }
 
     &__link {

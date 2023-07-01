@@ -1,8 +1,17 @@
-import Handlebars from "handlebars";
 import { mainPageTemplate } from "./main-page.tmpl";
 import { ChatsList } from "../../components/chats-list";
 import { Chat } from "../../components/chat";
+import { Block } from "../../utils/block";
 
-export const Main = (chats, activeChat) => {
-    return Handlebars.compile(mainPageTemplate)({ chatsLists: ChatsList(chats), activeChat: Chat(activeChat) });
-};
+export class Main extends Block {
+    constructor({ chats, activeChat }) {
+        super({
+            chatsLists: new ChatsList({ chats }),
+            activeChat: new Chat({ activeChat }),
+        });
+    }
+
+    render() {
+        return this.compile(mainPageTemplate, this.props);
+    }
+}

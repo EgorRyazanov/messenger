@@ -1,5 +1,13 @@
 @use "../../styles/_variables.scss" as vars;
 
-.login__container .input--last {
-    margin-bottom: 160px;
+.login__container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+    .input--last {
+        margin-bottom: 160px;
+    }
 }
