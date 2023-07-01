@@ -1,5 +1,14 @@
-import Handlebars from "handlebars";
 import "./link.scss";
+import { Block } from "../../utils/block";
 
-export const Link = ({ text, url = "/", linkClasses = "" }) =>
-    Handlebars.compile(`<a class="link {{linkClasses}}" href={{url}}>{{text}}</a>`)({ text, url, linkClasses });
+export class Link extends Block {
+    constructor({ text, url = "/", linkClasses = "" }) {
+        const props = { text, url, linkClasses };
+        console.log(props);
+        super(props);
+    }
+
+    render() {
+        return this.compile(`<a class="link {{linkClasses}}" href={{url}}>{{text}}</a>`, this.props);
+    }
+}

@@ -31,4 +31,18 @@
     &__container:not(:last-child) {
         margin-bottom: 16px;
     }
+
+    &__error {
+        color: vars.$error-color;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 10px;
+
+        &--active {
+            margin-top: 7px;
+        }
+    }
+    &--error {
+        border-bottom: 1px solid vars.$error-color;
+    }
 }

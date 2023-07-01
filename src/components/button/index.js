@@ -1,15 +1,22 @@
 import Handlebars from "handlebars";
 import "./button.scss";
+import { Block } from "../../utils/block";
 
-export const Button = ({ text, type = "button", url = "", classNames = "" }) =>
-    Handlebars.compile(
-        `<button type={{type}} {{#if url}} onclick="window.location.href = '{{url}}'" {{/if}} class="primary-button {{classNames}}">{{text}}</button>`
-    )({
-        text,
-        type,
-        url,
-        classNames,
-    });
+export class Button extends Block {
+    constructor({ text, events = {}, type = "button", classNames = "" }) {
+        const props = {
+            text,
+            type,
+            events,
+            classNames,
+        };
+        super(props);
+    }
+
+    render() {
+        return this.compile(`<button type={{type}} class="primary-button {{classNames}}">{{text}}</button>`, this.props);
+    }
+}
 
 export const ButtonIcon = ({ img, url = "", classNames = "" }) =>
     Handlebars.compile(`
