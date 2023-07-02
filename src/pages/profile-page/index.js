@@ -10,7 +10,7 @@ import { Form } from "../../components/form";
 
 export class Profile extends Block {
     constructor({ profile, url }) {
-        const pathname = window.location.pathname;
+        const { pathname } = window.location;
         const params = {
             isProfile: pathname === "/profile",
             isProfileEdit: pathname === "/profile/edit",
@@ -28,11 +28,37 @@ export class Profile extends Block {
     init() {
         const inputs = !this.props.params.isProfileChangePassword
             ? [
-                  new Input({ name: "login", labelValue: "Логин", isDisabled: this.props.params.isProfile, value: this.props.profile.login }),
-                  new Input({ name: "email", labelValue: "Почта", isDisabled: this.props.params.isProfile, value: this.props.profile.email, type: "email" }),
-                  new Input({ name: "first_name", labelValue: "Имя", isDisabled: this.props.params.isProfile, value: this.props.profile.name }),
-                  new Input({ name: "second_name", labelValue: "Фамилия", isDisabled: this.props.params.isProfile, value: this.props.profile.secondName }),
-                  new Input({ name: "display_name", labelValue: "Имя в чате", isDisabled: this.props.params.isProfile, value: this.props.profile.displayName }),
+                  new Input({
+                      name: "login",
+                      labelValue: "Логин",
+                      isDisabled: this.props.params.isProfile,
+                      value: this.props.profile.login,
+                  }),
+                  new Input({
+                      name: "email",
+                      labelValue: "Почта",
+                      isDisabled: this.props.params.isProfile,
+                      value: this.props.profile.email,
+                      type: "email",
+                  }),
+                  new Input({
+                      name: "first_name",
+                      labelValue: "Имя",
+                      isDisabled: this.props.params.isProfile,
+                      value: this.props.profile.name,
+                  }),
+                  new Input({
+                      name: "second_name",
+                      labelValue: "Фамилия",
+                      isDisabled: this.props.params.isProfile,
+                      value: this.props.profile.secondName,
+                  }),
+                  new Input({
+                      name: "display_name",
+                      labelValue: "Имя в чате",
+                      isDisabled: this.props.params.isProfile,
+                      value: this.props.profile.displayName,
+                  }),
                   new Input({
                       name: "phone",
                       labelValue: "Телефон",
@@ -52,12 +78,19 @@ export class Profile extends Block {
                   }),
               ];
 
-        const formEvents = { submit: (e) => this.onSubmit(e, this), focusout: (e) => this.handleValidateInputs(e.target.name, e.target.value, this) };
+        const formEvents = {
+            submit: (e) => this.onSubmit(e, this),
+            focusout: (e) => this.handleValidateInputs(e.target.name, e.target.value, this),
+        };
         const form = new Form({
             inputs,
             events: formEvents,
             classNames: "profile__form",
-            button: new Button({ text: "Сохранить", type: "submit", classNames: this.props.params.isProfile ? "profile__button--hidden" : "" }),
+            button: new Button({
+                text: "Сохранить",
+                type: "submit",
+                classNames: this.props.params.isProfile ? "profile__button--hidden" : "",
+            }),
         });
         this.children = {
             form,
@@ -72,7 +105,7 @@ export class Profile extends Block {
         e.preventDefault();
         const formData = new FormData(e.target);
         const form = {};
-        for (let [key, value] of formData.entries()) {
+        for (const [key, value] of formData.entries()) {
             form[key] = value;
         }
         console.log(form);

@@ -1,5 +1,22 @@
 {
-    "extends": "airbnb",
+    "extends": [
+        "airbnb",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
+    ],
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"]
+    "plugins": ["@typescript-eslint", "prettier"],
+    "env": {
+        "es6": true,
+        "browser": true
+    },
+    "rules": {
+        "import/prefer-default-export": "off",
+        "no-underscore-dangle": 0,
+        "camelcase": "warn",
+        "no-restricted-syntax": 0,
+        "import/extensions": 0,
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+    }
 }

@@ -6,7 +6,7 @@
         min-width: 310px;
         height: 100%;
         background-color: #fbfbfb;
-        padding: 21px 10px 0 10px;
+        padding: 21px 10px 0;
     }
 
     &__profile-link {
@@ -14,14 +14,14 @@
         color: vars.$gray-color;
         font-size: 12px;
         line-height: 12px;
-        font-family: "Inter";
+        font-family: Inter, sans-serif;
         margin-left: auto;
         text-align: right;
         margin-bottom: 23px;
     }
 
     &__search {
-        background-color: vars.$gray-color--medium;
+        background-color: vars.$gray-color-medium;
         padding: 10px;
         border-radius: 5px;
         width: 100%;
@@ -37,7 +37,7 @@
         text-align: center;
         background-image: url("../../assets/icons/magnifier.svg");
         background-repeat: no-repeat;
-        background-position: 38% 0px;
+        background-position: 38% 0;
     }
 
     &__persons-container {
@@ -49,8 +49,9 @@
     &__persons-container::-webkit-scrollbar {
         width: 3px;
     }
+
     &__persons-container::-webkit-scrollbar-thumb {
-        background-color: rgba(219, 112, 147, 0.5);
+        background-color: rgb(219 112 147 / 50%);
     }
 
     &__persons-container::-webkit-scrollbar-track {
@@ -79,7 +80,7 @@
             &__avatar {
                 width: 47px;
                 height: 47px;
-                background-color: vars.$gray-color--medium;
+                background-color: vars.$gray-color-medium;
                 border-radius: 50%;
                 margin-right: 10px;
                 object-fit: cover;
@@ -105,7 +106,7 @@
                 text-overflow: ellipsis;
 
                 &--bold {
-                    color: #000000;
+                    color: #000;
                 }
             }
 
@@ -140,7 +141,7 @@
                         transform: translate(-50%, -50%);
                         text-align: center;
                         align-self: center;
-                        color: #ffffff;
+                        color: #fff;
                     }
 
                     &__date {
@@ -155,6 +156,6 @@
     }
 
     &__item:hover {
-        background-color: vars.$primary-color--pale;
+        background-color: vars.$primary-color-pale;
     }
 }

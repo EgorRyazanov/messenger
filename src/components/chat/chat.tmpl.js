@@ -2,14 +2,14 @@ import Handlebars from "handlebars";
 import "./chat.scss";
 import { converChatDate } from "../../utils/utils";
 
-Handlebars.registerHelper("ifMessageAuthorContainer", function (message, opts) {
+Handlebars.registerHelper("ifMessageAuthorContainer", (message, opts) => {
     if (message.author === "Вы") {
         return opts.fn("class='main__message main__message--you'");
     }
     return opts.inverse("class='main__message'");
 });
 
-Handlebars.registerHelper("messageDate", function (message, opts) {
+Handlebars.registerHelper("messageDate", (message, opts) => {
     if (message.author === "Вы") {
         return opts.fn(converChatDate(message.date));
     }

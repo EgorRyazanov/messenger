@@ -23,7 +23,14 @@ export class Chat extends Block {
     }
 
     init() {
-        const inputs = [new Input({ name: "message", isAutofocus: true, inputClasses: "footer__message", inputContainerClasses: "chat__input-container" })];
+        const inputs = [
+            new Input({
+                name: "message",
+                isAutofocus: true,
+                inputClasses: "footer__message",
+                inputContainerClasses: "chat__input-container",
+            }),
+        ];
         const formEvents = { submit: (e) => this.onSubmit(e, this) };
         this.children.form = new Form({
             inputs,
@@ -46,7 +53,7 @@ export class Chat extends Block {
         if (isConfirm) {
             const formData = new FormData(e.target);
             const form = {};
-            for (let [key, value] of formData.entries()) {
+            for (const [key, value] of formData.entries()) {
                 form[key] = value;
             }
             console.log(form);

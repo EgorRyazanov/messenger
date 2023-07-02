@@ -1,6 +1,8 @@
+/* eslint-disable */
+
 import Handlebars from "handlebars";
-import { EventBus } from "./event-bus";
 import { nanoid } from "nanoid";
+import { EventBus } from "./event-bus";
 
 export class Block {
     static EVENTS = {
@@ -57,6 +59,7 @@ export class Block {
             this._element?.addEventListener(eventName, events[eventName]);
         });
     }
+
     _removeEvents() {
         const { events = {} } = this.props;
 
@@ -64,6 +67,7 @@ export class Block {
             this._element?.removeEventListener(eventName, events[eventName]);
         });
     }
+
     _registerEvents(eventBus) {
         eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
@@ -76,11 +80,13 @@ export class Block {
 
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
+
     init() {}
 
     _componentDidMount() {
         this.componentDidMount();
     }
+
     componentDidMount() {}
 
     dispatchComponentDidMount() {
@@ -100,6 +106,7 @@ export class Block {
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
         }
     }
+
     componentDidUpdate(oldProps, newProps) {
         return true;
     }
@@ -111,6 +118,7 @@ export class Block {
         Object.assign(this.props, nextProps);
         this._componentDidUpdate(this.props, nextProps);
     };
+
     getProps = (key) => {
         const value = this.props[key];
         return value;

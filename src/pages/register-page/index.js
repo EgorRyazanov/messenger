@@ -15,15 +15,28 @@ export class Register extends Block {
 
     init() {
         const inputs = [
-            new Input({ name: "email", labelValue: "Почта *", type: "email", isAutofocus: true }),
+            new Input({
+                name: "email",
+                labelValue: "Почта *",
+                type: "email",
+                isAutofocus: true,
+            }),
             new Input({ name: "login", labelValue: "Логин *" }),
             new Input({ name: "first_name", labelValue: "Имя *" }),
             new Input({ name: "second_name", labelValue: "Фамилия *" }),
             new Input({ name: "phone", labelValue: "Телефон *" }),
             new Input({ name: "password", labelValue: "Пароль *", type: "password" }),
-            new Input({ name: "repeat_password", labelValue: "Пароль (ещё раз) *", inputContainerClasses: "input--last", type: "password" }),
+            new Input({
+                name: "repeat_password",
+                labelValue: "Пароль (ещё раз) *",
+                inputContainerClasses: "input--last",
+                type: "password",
+            }),
         ];
-        const formEvents = { submit: (e) => this.onSubmit(e, this), focusout: (e) => this.handleValidateInputs(e.target.name, e.target.value, this) };
+        const formEvents = {
+            submit: (e) => this.onSubmit(e, this),
+            focusout: (e) => this.handleValidateInputs(e.target.name, e.target.value, this),
+        };
         this.children.form = new Form({
             inputs,
             events: formEvents,
@@ -37,7 +50,7 @@ export class Register extends Block {
         e.preventDefault();
         const formData = new FormData(e.target);
         const form = {};
-        for (let [key, value] of formData.entries()) {
+        for (const [key, value] of formData.entries()) {
             form[key] = value;
         }
         console.log(form);

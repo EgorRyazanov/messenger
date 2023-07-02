@@ -3,7 +3,7 @@
 .input {
     font-size: 13px;
     line-height: 13px;
-    font-family: "Inter";
+    font-family: Inter, sans-serif;
     padding: 7px 0;
     border: none;
     width: 100%;
@@ -11,7 +11,7 @@
     background-color: transparent;
 
     &:hover {
-        border-bottom: vars.$primary-color--hover solid 1px;
+        border-bottom: vars.$primary-color-hover solid 1px;
     }
 
     &:focus {
@@ -42,6 +42,7 @@
             margin-top: 7px;
         }
     }
+
     &--error {
         border-bottom: 1px solid vars.$error-color;
     }

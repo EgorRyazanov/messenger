@@ -8,6 +8,6 @@ export class Link extends Block {
     }
 
     render() {
-        return this.compile(`<a class="link {{linkClasses}}" href={{url}}>{{text}}</a>`, this.props);
+        return this.compile('<a class="link {{linkClasses}}" href={{url}}>{{text}}</a>', this.props);
     }
 }

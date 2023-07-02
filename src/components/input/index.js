@@ -15,7 +15,19 @@ export class Input extends Block {
         value = "",
         type = "text",
     }) {
-        const props = { name, error, inputContainerClasses, inputErrorClasses, isAutofocus, labelValue, events, inputClasses, isDisabled, value, type };
+        const props = {
+            name,
+            error,
+            inputContainerClasses,
+            inputErrorClasses,
+            isAutofocus,
+            labelValue,
+            events,
+            inputClasses,
+            isDisabled,
+            value,
+            type,
+        };
         super(props);
     }
 
@@ -26,7 +38,7 @@ export class Input extends Block {
                 <input {{#if isAutofocus }} autofocus {{/if}} type='{{type}}' value='{{value}}' {{#if isDisabled }} disabled {{/if}} id={{name}} type="text" name={{name}} class="input {{inputClasses}}" >
                 <p class="input__error {{inputErrorClasses}}">{{error}}</p>
             </div>`,
-            this.props
+            this.props,
         );
     }
 }

@@ -16,9 +16,17 @@ export class Login extends Block {
     init() {
         const inputs = [
             new Input({ name: "login", labelValue: "Логин", isAutofocus: true }),
-            new Input({ name: "password", labelValue: "Пароль", inputContainerClasses: "input--last", type: "password" }),
+            new Input({
+                name: "password",
+                labelValue: "Пароль",
+                inputContainerClasses: "input--last",
+                type: "password",
+            }),
         ];
-        const formEvents = { submit: (e) => this.onSubmit(e, this), focusout: (e) => this.handleValidateInputs(e.target.name, e.target.value, this) };
+        const formEvents = {
+            submit: (e) => this.onSubmit(e, this),
+            focusout: (e) => this.handleValidateInputs(e.target.name, e.target.value, this),
+        };
         this.children.form = new Form({
             inputs,
             events: formEvents,
@@ -32,7 +40,7 @@ export class Login extends Block {
         e.preventDefault();
         const formData = new FormData(e.target);
         const form = {};
-        for (let [key, value] of formData.entries()) {
+        for (const [key, value] of formData.entries()) {
             form[key] = value;
         }
         console.log(form);

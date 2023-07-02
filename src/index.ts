@@ -2,7 +2,7 @@ import "./styles/index.scss";
 import { Login } from "./pages/login-page/index.js";
 import { Register } from "./pages/register-page/index.js";
 import { Main } from "./pages/main-page/index.js";
-import { data_chats, data_profile } from "./utils/constants.js";
+import { data_chats, data_profile } from "./utils/constants.ts";
 import { Profile } from "./pages/profile-page/index.js";
 import { Error } from "./pages/error-page/index.js";
 

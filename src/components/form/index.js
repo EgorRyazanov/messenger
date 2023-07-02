@@ -4,7 +4,14 @@ import { formTemplate } from "./form.tmpl";
 
 export class Form extends Block {
     constructor({ button, link, events = {}, inputs = {}, classNames = {}, title = "" }) {
-        const props = { button, link, inputs, classNames, title, events };
+        const props = {
+            button,
+            link,
+            inputs,
+            classNames,
+            title,
+            events,
+        };
         super(props);
     }
 

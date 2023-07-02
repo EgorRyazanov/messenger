@@ -7,33 +7,35 @@ const METHODS = {
 
 function queryStringify(data) {
     if (data && Object.keys(data).length > 0) {
-        let foramtedData = `?`;
-        for (let key in data) {
+        let foramtedData = "?";
+        Object.keys(data).forEach((key) => {
             foramtedData += `${key}=${data[key]}&`;
-        }
+        });
         return foramtedData.slice(0, foramtedData.length - 1);
     }
     return "";
 }
 
-class HTTPTransport {
+export class HTTPTransport {
+    constructor() {
+        this.request = this.request.bind(this);
+    }
+
     get = (url, options = {}) => {
-        console.log(`${url}${queryStringify(options.data)}`);
-        return this.request(options.data ? `${url}${queryStringify(options.data)}` : url, { ...options, method: METHODS.GET }, options.timeout);
+        return this.request(
+            options.data ? `${url}${queryStringify(options.data)}` : url,
+            { ...options, method: METHODS.GET },
+            options.timeout,
+        );
     };
 
-    delete = (url, options = {}) => {
-        return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
-    };
+    delete = (url, options = {}) => this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
 
-    put = (url, options = {}) => {
-        return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
-    };
+    put = (url, options = {}) => this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
 
-    post = (url, options = {}) => {
-        return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
-    };
+    post = (url, options = {}) => this.request(url, { ...options, method: METHODS.POST }, options.timeout);
 
+    // eslint-disable-next-line
     request = (url, options, timeout = 5000) => {
         const { method, data } = options;
 
@@ -46,9 +48,7 @@ class HTTPTransport {
                 }
             }
 
-            xhr.onload = function () {
-                resolve(xhr);
-            };
+            xhr.onload = resolve(xhr);
             xhr.timeout = timeout;
             xhr.onabort = reject;
             xhr.onerror = reject;
