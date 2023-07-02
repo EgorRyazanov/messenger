@@ -1,0 +1,20 @@
+@use "../../styles/variables" as vars;
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 340px;
+    box-shadow: vars.$box-shadow;
+    border-radius: 12px;
+    padding: 50px 30px 30px;
+
+    &__title {
+        font-size: 20px;
+        line-height: 20px;
+        font-style: normal;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+}

@@ -1,15 +1,15 @@
 import Handlebars from "handlebars";
 import "./chat.scss";
-import { converChatDate } from "../../utils/utils";
+import { converChatDate } from "../../utils/utils.ts";
 
-Handlebars.registerHelper("ifMessageAuthorContainer", function (message, opts) {
+Handlebars.registerHelper("ifMessageAuthorContainer", (message, opts) => {
     if (message.author === "Вы") {
         return opts.fn("class='main__message main__message--you'");
     }
     return opts.inverse("class='main__message'");
 });
 
-Handlebars.registerHelper("messageDate", function (message, opts) {
+Handlebars.registerHelper("messageDate", (message, opts) => {
     if (message.author === "Вы") {
         return opts.fn(converChatDate(message.date));
     }
@@ -44,8 +44,7 @@ export const chatTemplate = `
             </div>
             <div class="chat__footer">
                 {{{messageSettingButton}}}
-                <input class="footer__message" placeholder="Сообщение" name="message">
-                {{{sendButton}}}
+                {{{form}}}
             </div>
         <div>
     {{else}}
