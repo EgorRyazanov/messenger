@@ -1,10 +1,10 @@
 import "./styles/index.scss";
-import { Login } from "./pages/login-page/index.js";
-import { Register } from "./pages/register-page/index.js";
-import { Main } from "./pages/main-page/index.js";
+import { Login } from "./pages/login-page/index.ts";
+import { Register } from "./pages/register-page/index.ts";
+import { Main } from "./pages/main-page/index.ts";
 import { data_chats, data_profile } from "./utils/constants.ts";
-import { Profile } from "./pages/profile-page/index.js";
-import { Error } from "./pages/error-page/index.js";
+import { Profile } from "./pages/profile-page/index.ts";
+import { Error } from "./pages/error-page/index.ts";
 
 const getPage = () => {
     switch (window.location.pathname) {
@@ -24,7 +24,7 @@ const getPage = () => {
             return new Profile({ profile: data_profile, url: "/" });
         }
         case "/": {
-            return new Main({ chats: data_chats, activeChat: "" });
+            return new Main({ chats: data_chats, activeChat: null });
         }
         default: {
             const pathname = window.location.pathname.slice(1);

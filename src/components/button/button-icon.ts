@@ -1,8 +1,15 @@
 import "./button.scss";
-import { Block } from "../../utils/block";
+import { Block } from "../../utils/block.ts";
 
-export class ButtonIcon extends Block {
-    constructor({ img, url = "", classNames = "", type = "button" }) {
+interface IBUttonIcon {
+    img: string;
+    url?: string;
+    classNames?: string;
+    type?: string;
+}
+
+export class ButtonIcon extends Block<IBUttonIcon> {
+    constructor({ img, url = "", classNames = "", type = "button" }: IBUttonIcon) {
         super({
             img,
             url,

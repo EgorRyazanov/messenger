@@ -1,7 +1,7 @@
 import "./chats-list.scss";
 import Handlebars from "handlebars";
 import arrow from "../../assets/icons/arrow.svg";
-import { converChatsListsDate } from "../../utils/utils";
+import { converChatsListsDate } from "../../utils/utils.ts";
 
 Handlebars.registerHelper("lastMessage", (array) => {
     if (array && array.length > 0) {

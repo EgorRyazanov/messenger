@@ -1,11 +1,6 @@
-const METHODS = {
-    GET: "GET",
-    POST: "POST",
-    DELETE: "DELETE",
-    PUT: "PUT",
-};
+import { API_METHODS, TConfig } from "./types.ts";
 
-function queryStringify(data) {
+function queryStringify(data: { [key in string]: unknown }): string {
     if (data && Object.keys(data).length > 0) {
         let foramtedData = "?";
         Object.keys(data).forEach((key) => {
@@ -21,22 +16,22 @@ export class HTTPTransport {
         this.request = this.request.bind(this);
     }
 
-    get = (url, options = {}) => {
+    get = (url: string, options: TConfig) => {
         return this.request(
             options.data ? `${url}${queryStringify(options.data)}` : url,
-            { ...options, method: METHODS.GET },
+            { ...options, method: API_METHODS.GET },
             options.timeout,
         );
     };
 
-    delete = (url, options = {}) => this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+    delete = (url: string, options: TConfig) => this.request(url, { ...options, method: API_METHODS.DELETE }, options.timeout);
 
-    put = (url, options = {}) => this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+    put = (url: string, options: TConfig) => this.request(url, { ...options, method: API_METHODS.PUT }, options.timeout);
 
-    post = (url, options = {}) => this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+    post = (url: string, options: TConfig) => this.request(url, { ...options, method: API_METHODS.POST }, options.timeout);
 
     // eslint-disable-next-line
-    request = (url, options, timeout = 5000) => {
+    request = (url: string, options: TConfig, timeout = 5000) => {
         const { method, data } = options;
 
         return new Promise((resolve, reject) => {
@@ -48,13 +43,13 @@ export class HTTPTransport {
                 }
             }
 
-            xhr.onload = resolve(xhr);
+            xhr.onload = () => resolve(xhr);
             xhr.timeout = timeout;
             xhr.onabort = reject;
             xhr.onerror = reject;
             xhr.ontimeout = reject;
 
-            if (method === METHODS.GET || !data) {
+            if (method === API_METHODS.GET || !data) {
                 xhr.send();
             } else {
                 xhr.send(data);

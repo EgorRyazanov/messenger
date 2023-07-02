@@ -1,9 +1,14 @@
-import { userErrorTemplate } from "./error-page";
-import { Link } from "../../components/link";
-import { Block } from "../../utils/block";
+import { userErrorTemplate } from "./error-page.ts";
+import { Link } from "../../components/link/index.ts";
+import { Block } from "../../utils/block.ts";
 
-export class Error extends Block {
-    constructor(props) {
+interface IError {
+    title: string;
+    linkBack: Link;
+}
+
+export class Error extends Block<IError> {
+    constructor(props: { title: string }) {
         super({
             linkBack: new Link({
                 text: "Назад к чатам",

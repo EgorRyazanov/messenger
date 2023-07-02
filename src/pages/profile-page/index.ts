@@ -1,15 +1,26 @@
-import { profileTemplate } from "./profile.tmpl";
-import { Input } from "../../components/input";
+import { profileTemplate } from "./profile.tmpl.ts";
+import { Input } from "../../components/input/index.ts";
 import "./profile.scss";
-import { Link } from "../../components/link";
-import { Button, ButtonIcon } from "../../components/button";
+import { Link } from "../../components/link/index.ts";
+import { Button, ButtonIcon } from "../../components/button/index.ts";
 import backIcon from "../../assets/icons/back.svg";
-import { Block } from "../../utils/block";
-import { handleValidateInputs } from "../../utils/validate";
-import { Form } from "../../components/form";
+import { Block } from "../../utils/block.ts";
+import { handleValidateInputs } from "../../utils/validate.ts";
+import { Form } from "../../components/form/index.ts";
+import { TProfile } from "../../utils/constants.ts";
 
-export class Profile extends Block {
-    constructor({ profile, url }) {
+interface IProfile {
+    params: {
+        isProfile: boolean;
+        isProfileEdit: boolean;
+        isProfileChangePassword: boolean;
+    };
+    profile: TProfile;
+    url: string;
+}
+
+export class Profile extends Block<IProfile> {
+    constructor({ profile, url }: Omit<IProfile, "params">) {
         const { pathname } = window.location;
         const params = {
             isProfile: pathname === "/profile",
@@ -22,7 +33,6 @@ export class Profile extends Block {
             params,
         });
         this.onSubmit = this.onSubmit.bind(this);
-        this.handleValidateInputs = handleValidateInputs;
     }
 
     init() {
@@ -79,8 +89,8 @@ export class Profile extends Block {
               ];
 
         const formEvents = {
-            submit: (e) => this.onSubmit(e, this),
-            focusout: (e) => this.handleValidateInputs(e.target.name, e.target.value, this),
+            submit: (e: Event) => this.onSubmit(e, this),
+            focusout: (e: Event) => handleValidateInputs((e.target as HTMLInputElement).name, (e.target as HTMLInputElement).value, this),
         };
         const form = new Form({
             inputs,
@@ -101,18 +111,18 @@ export class Profile extends Block {
         };
     }
 
-    onSubmit(e, self) {
+    onSubmit(e: Event, self: Profile) {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        const form = {};
+        const formData = new FormData(e.target as HTMLFormElement);
+        const form: Record<string, FormDataEntryValue> = {};
         for (const [key, value] of formData.entries()) {
             form[key] = value;
         }
         console.log(form);
         let isConfirm = true;
-        self.children.form.children.inputs.forEach((inputContainer) => {
-            const inputElement = inputContainer.getContent().querySelector("input");
-            const isError = this.handleValidateInputs(inputElement.name, inputElement.value, self);
+        ((self.children.form as Block).children.inputs as Block[]).forEach((inputContainer) => {
+            const inputElement = inputContainer?.getContent()?.querySelector("input");
+            const isError = handleValidateInputs(inputElement?.name || "", inputElement?.value || "", self);
             if (isError) {
                 isConfirm = false;
             }

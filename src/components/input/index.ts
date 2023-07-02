@@ -1,7 +1,21 @@
-import { Block } from "../../utils/block";
+import { Block } from "../../utils/block.ts";
 import "./input.scss";
 
-export class Input extends Block {
+interface IInput {
+    name: string;
+    labelValue: string;
+    inputErrorClasses?: string;
+    error?: string;
+    isAutofocus?: boolean;
+    events?: Record<string, (args: any) => void>;
+    inputClasses?: string;
+    inputContainerClasses?: string;
+    isDisabled?: boolean;
+    value?: string;
+    type?: string;
+}
+
+export class Input extends Block<IInput> {
     constructor({
         name,
         labelValue,
@@ -14,7 +28,7 @@ export class Input extends Block {
         isDisabled = false,
         value = "",
         type = "text",
-    }) {
+    }: IInput) {
         const props = {
             name,
             error,

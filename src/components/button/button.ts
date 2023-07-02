@@ -1,8 +1,15 @@
 import "./button.scss";
-import { Block } from "../../utils/block";
+import { Block } from "../../utils/block.ts";
 
-export class Button extends Block {
-    constructor({ text, events = {}, type = "button", classNames = "" }) {
+interface IButton {
+    text: string;
+    events?: Record<string, (args: any) => void>;
+    type?: string;
+    classNames?: string;
+}
+
+export class Button extends Block<IButton> {
+    constructor({ text, events = {}, type = "button", classNames = "" }: IButton) {
         const props = {
             text,
             type,

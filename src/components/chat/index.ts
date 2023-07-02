@@ -1,16 +1,23 @@
-import { Block } from "../../utils/block";
-import { chatTemplate } from "./chat.tmpl";
+import { Block } from "../../utils/block.ts";
+import { chatTemplate } from "./chat.tmpl.ts";
 import messageSettings from "../../assets/icons/message-settings.svg";
 import userSettingsIcon from "../../assets/icons/user-settings.svg";
 import sendMessage from "../../assets/icons/send-message.svg";
-import { ButtonIcon } from "../button";
-import { Input } from "../input";
-import { Form } from "../form";
-import { handleValidateInputs } from "../../utils/validate";
+import { ButtonIcon } from "../button/index.ts";
+import { Input } from "../input/index.ts";
+import { Form } from "../form/index.ts";
+import { handleValidateInputs } from "../../utils/validate.ts";
 import "./chat.scss";
+import { TChat } from "../../utils/constants.ts";
 
-export class Chat extends Block {
-    constructor({ activeChat }) {
+interface IChat {
+    activeChat: TChat;
+    messageSettingButton: ButtonIcon;
+    userSettingButton: ButtonIcon;
+}
+
+export class Chat extends Block<IChat> {
+    constructor({ activeChat }: { activeChat: TChat }) {
         const props = {
             activeChat,
 
@@ -19,19 +26,19 @@ export class Chat extends Block {
         };
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
-        this.handleValidateInputs = handleValidateInputs;
     }
 
     init() {
         const inputs = [
             new Input({
                 name: "message",
+                labelValue: "",
                 isAutofocus: true,
                 inputClasses: "footer__message",
                 inputContainerClasses: "chat__input-container",
             }),
         ];
-        const formEvents = { submit: (e) => this.onSubmit(e, this) };
+        const formEvents = { submit: (e: Event) => this.onSubmit(e, this) };
         this.children.form = new Form({
             inputs,
             classNames: "chat__form",
@@ -40,19 +47,19 @@ export class Chat extends Block {
         });
     }
 
-    onSubmit(e, self) {
+    onSubmit(e: Event, self: Chat) {
         e.preventDefault();
         let isConfirm = true;
-        self.children.form.children.inputs.forEach((inputContainer) => {
-            const inputElement = inputContainer.getContent().querySelector("input");
-            const isError = this.handleValidateInputs(inputElement.name, inputElement.value, self);
+        ((self.children.form as Block).children.inputs as Block[]).forEach((inputContainer) => {
+            const inputElement = inputContainer?.getContent()?.querySelector("input");
+            const isError = handleValidateInputs(inputElement?.name || "", inputElement?.value || "", self);
             if (isError) {
                 isConfirm = false;
             }
         });
         if (isConfirm) {
-            const formData = new FormData(e.target);
-            const form = {};
+            const formData = new FormData(e.target as HTMLFormElement);
+            const form: Record<string, FormDataEntryValue> = {};
             for (const [key, value] of formData.entries()) {
                 form[key] = value;
             }
