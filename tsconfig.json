@@ -15,7 +15,8 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         "allowJs": true,
-        "noImplicitAny": true
+        "noImplicitAny": true,
+        "sourceMap": true
     },
     "include": ["src"],
     "references": [{ "path": "./tsconfig.node.json" }]
