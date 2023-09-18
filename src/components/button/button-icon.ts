@@ -1,15 +1,15 @@
 import "./button.scss";
 import { Block } from "../../utils/block.ts";
 
-interface IBUttonIcon {
+interface ButtonIconProps {
     img: string;
     url?: string;
     classNames?: string;
     type?: string;
 }
 
-export class ButtonIcon extends Block<IBUttonIcon> {
-    constructor({ img, url = "", classNames = "", type = "button" }: IBUttonIcon) {
+export class ButtonIconComponent extends Block<ButtonIconProps> {
+    public constructor({ img, url = "", classNames = "", type = "button" }: ButtonIconProps) {
         super({
             img,
             url,
@@ -18,7 +18,7 @@ export class ButtonIcon extends Block<IBUttonIcon> {
         });
     }
 
-    render() {
+    protected render() {
         return this.compile(
             `<button type={{type}} {{#if url}} onclick="window.location.href = '{{url}}'" {{/if}} class="icon-button {{classNames}}">
                 <img src='{{img}}' alt="Кнопка">

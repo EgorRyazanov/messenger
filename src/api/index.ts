@@ -1,36 +1,27 @@
+import { queryString } from "../utils/helpers.ts";
 import { API_METHODS, TConfig } from "./types.ts";
 
-function queryStringify(data: { [key in string]: unknown }): string {
-    if (data && Object.keys(data).length > 0) {
-        let foramtedData = "?";
-        Object.keys(data).forEach((key) => {
-            foramtedData += `${key}=${data[key]}&`;
-        });
-        return foramtedData.slice(0, foramtedData.length - 1);
-    }
-    return "";
-}
+type HTTPMethod = (url: string, options: TConfig) => Promise<unknown>;
 
 export class HTTPTransport {
     constructor() {
         this.request = this.request.bind(this);
     }
 
-    get = (url: string, options: TConfig) => {
+    get: HTTPMethod = (url, options) => {
         return this.request(
-            options.data ? `${url}${queryStringify(options.data)}` : url,
+            options.data ? `${url}${queryString(options.data)}` : url,
             { ...options, method: API_METHODS.GET },
             options.timeout,
         );
     };
 
-    delete = (url: string, options: TConfig) => this.request(url, { ...options, method: API_METHODS.DELETE }, options.timeout);
+    delete: HTTPMethod = (url, options) => this.request(url, { ...options, method: API_METHODS.DELETE }, options.timeout);
 
-    put = (url: string, options: TConfig) => this.request(url, { ...options, method: API_METHODS.PUT }, options.timeout);
+    put: HTTPMethod = (url, options) => this.request(url, { ...options, method: API_METHODS.PUT }, options.timeout);
 
-    post = (url: string, options: TConfig) => this.request(url, { ...options, method: API_METHODS.POST }, options.timeout);
+    post: HTTPMethod = (url, options) => this.request(url, { ...options, method: API_METHODS.POST }, options.timeout);
 
-    // eslint-disable-next-line
     request = (url: string, options: TConfig, timeout = 5000) => {
         const { method, data } = options;
 

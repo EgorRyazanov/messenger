@@ -1,6 +1,6 @@
 import defaultImage from "../assets/default-image.jpg";
 
-export type TChat = {
+export type Chat = {
     name: string;
     avatar: string | null;
     new: number;
@@ -12,7 +12,7 @@ export type TChat = {
     }[];
 } | null;
 
-export type TChats = TChat[];
+export type Chats = Chat[];
 
 export type TProfile = {
     email: string;
@@ -34,7 +34,7 @@ export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
     second: "numeric",
 };
 
-export const data_chats = [
+export const DATA_CHATS = [
     {
         name: "Дарья",
         avatar: defaultImage,
@@ -270,7 +270,7 @@ export const data_chats = [
     },
 ];
 
-export const data_profile = {
+export const DATA_PROFILE = {
     email: "aricsybsn@gmail.com",
     login: "aricsy",
     name: "Егор",

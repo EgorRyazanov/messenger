@@ -1,16 +1,16 @@
 import { userErrorTemplate } from "./error-page.ts";
-import { Link } from "../../components/link/index.ts";
+import { LinkComponent } from "../../components/link/index.ts";
 import { Block } from "../../utils/block.ts";
 
-interface IError {
+interface ErrorProps {
     title: string;
-    linkBack: Link;
+    linkBack: LinkComponent;
 }
 
-export class Error extends Block<IError> {
-    constructor(props: { title: string }) {
+export class ErrorPage extends Block<ErrorProps> {
+    public constructor(props: { title: string }) {
         super({
-            linkBack: new Link({
+            linkBack: new LinkComponent({
                 text: "Назад к чатам",
                 url: "/",
                 events: {
@@ -21,7 +21,7 @@ export class Error extends Block<IError> {
         });
     }
 
-    render() {
+    protected render() {
         return this.compile(userErrorTemplate, this.props);
     }
 }

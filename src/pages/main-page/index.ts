@@ -1,23 +1,23 @@
 import { mainPageTemplate } from "./main-page.tmpl.ts";
-import { ChatsList } from "../../components/chats-list/index.ts";
-import { Chat } from "../../components/chat/index.ts";
+import { ChatsListComponent } from "../../components/chats-list/index.ts";
+import { ChatComponent } from "../../components/chat/index.ts";
 import { Block } from "../../utils/block.ts";
-import { TChat, TChats } from "../../utils/constants.ts";
+import { Chat, Chats } from "../../utils/constants.ts";
 
-interface IMain {
-    chatsLists: ChatsList;
-    activeChat: Chat;
+interface MainProps {
+    chatsLists: ChatsListComponent;
+    activeChat: ChatComponent;
 }
 
-export class Main extends Block<IMain> {
-    constructor({ chats, activeChat }: { chats: TChats; activeChat: TChat }) {
+export class MainPage extends Block<MainProps> {
+    public constructor({ chats, activeChat }: { chats: Chats; activeChat: Chat }) {
         super({
-            chatsLists: new ChatsList({ chats }),
-            activeChat: new Chat({ activeChat }),
+            chatsLists: new ChatsListComponent({ chats }),
+            activeChat: new ChatComponent({ activeChat }),
         });
     }
 
-    render() {
+    protected render() {
         return this.compile(mainPageTemplate, this.props);
     }
 }

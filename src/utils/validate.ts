@@ -1,98 +1,133 @@
-import { Block } from "./block.ts";
-
-export const validateLogin = (login: string): boolean => {
-    if (login) {
-        return login.length >= 3 && login.length <= 20 && /^[a-zA-Z0-9-_]+$/.test(login) && !/^\d+$/.test(login);
-    }
-
-    return false;
+const EMPTY_MESSAGE = "Обязательно поле";
+const MIN_VALUE_MESSAGE = (minValue: number): string => {
+    return `Значение должно быть больше ${minValue}`;
+};
+const MAX_VALUE_MESSAGE = (maxValue: number): string => {
+    return `Значение должно быть меньше, чем ${maxValue}`;
 };
 
-export const validatePassword = (password: string): boolean => {
-    if (password) {
-        return (
-            password.length >= 8 &&
-            password.length <= 40 &&
-            /[0-9]+/.test(password) &&
-            /[A-Z]+/.test(password) &&
-            /^[a-zA-Z0-9]+$/.test(password)
-        );
-    }
-
-    return false;
+const isTargetValueBiggerThanMinValue = (value: string, threshold: number): boolean => {
+    return value.length >= threshold;
 };
 
-export const validateEmail = (email: string): boolean => {
-    if (email) {
-        return /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email);
-    }
-
-    return false;
+const isTargetValueLessThanMaxValue = (value: string, threshold: number): boolean => {
+    return value.length <= threshold;
 };
 
-export const validateNames = (name: string): boolean => {
-    if (name) {
-        return /^[a-zA-Zа-яА-ЯёЁ-]+$/.test(name) && name[0] === name[0].toUpperCase();
-    }
-
-    return false;
+const hasValueNumbers = (value: string): boolean => {
+    return /[0-9]+/.test(value);
 };
 
-export const validatePhone = (phone: string): boolean => {
-    if (phone) {
-        const countPlusSymbols = phone.split("+").length;
-        return phone.length <= 15 && /^[0-9+]+$/.test(phone) && ((countPlusSymbols === 2 && phone[0] === "+") || countPlusSymbols === 1);
-    }
-
-    return false;
+const hasValueCapitalLetters = (value: string): boolean => {
+    return /[A-ZА-ЯЁ]+/.test(value);
 };
 
-export const validateRepeatPassword = (repeatPassword: string, password: string | undefined): boolean => {
-    if (repeatPassword) {
-        return repeatPassword === password;
-    }
-    return false;
+const isValueValidNumber = (value: string): boolean => {
+    return !Number.isNaN(Number(value));
 };
 
-export const handleValidateInputs = (name: string, value: string, self: Block) => {
-    const input = ((self.children.form as Block).children.inputs as Block[]).find((currentInput) => currentInput.props.name === name);
-    const elementProps = input?.props;
-    let message = null;
-    if (name === "login" && !validateLogin(value)) {
-        message = "Некорректный логин";
-    } else if ((name === "password" || name === "old_password") && !validatePassword(value)) {
-        message = "Некорректный пароль";
-    } else if (name === "email" && !validateEmail(value)) {
-        message = "Некорректная почта";
-    } else if ((name === "first_name" || name === "second_name") && !validateNames(value)) {
-        message = "Некорректное значение";
-    } else if (name === "phone" && !validatePhone(value)) {
-        message = "Некорретный телефон";
-    } else if (name === "repeat_password") {
-        const password = ((self.children.form as Block).children.inputs as Block[])
-            ?.find((elem) => elem.props.name === "password")
-            ?.getContent()
-            ?.querySelector("input")?.value;
-        if (!validateRepeatPassword(value, password)) {
-            message = "Пароли не совпадают";
-        }
-    } else if (name === "message") {
-        if (!value) {
-            elementProps.inputClasses += " input--error";
-            elementProps.value = "";
-            return true;
-        }
+export const validateLogin = (login: string): string | null => {
+    if (login === "") {
+        return EMPTY_MESSAGE;
     }
-    if (message) {
-        elementProps.inputClasses += " input--error";
-        elementProps.error = message;
-        elementProps.inputErrorClasses += " input__error--active";
-        elementProps.value = "";
-        return true;
+
+    if (!isTargetValueBiggerThanMinValue(login, 3)) {
+        return MIN_VALUE_MESSAGE(2);
     }
-    elementProps.value = value;
-    elementProps.inputClasses = elementProps.inputClasses.replace("input--error", "").trim();
-    elementProps.error = "";
-    elementProps.inputErrorClasses = elementProps.inputErrorClasses.replace("input__error--active", "").trim();
-    return false;
+
+    if (!isTargetValueLessThanMaxValue(login, 20)) {
+        return MAX_VALUE_MESSAGE(21);
+    }
+
+    if (isValueValidNumber(login)) {
+        return "Значение не должно состоять только из цифр";
+    }
+
+    if (!/^[a-zA-Z0-9-_]+$/.test(login)) {
+        return "Только латиница, может содержать цифры и дефис";
+    }
+
+    return null;
+};
+
+export const validatePassword = (password: string): string | null => {
+    if (password === "") {
+        return EMPTY_MESSAGE;
+    }
+
+    if (!isTargetValueBiggerThanMinValue(password, 8)) {
+        return MIN_VALUE_MESSAGE(7);
+    }
+
+    if (!isTargetValueLessThanMaxValue(password, 40)) {
+        return MAX_VALUE_MESSAGE(41);
+    }
+
+    if (!hasValueNumbers(password)) {
+        return "Значение должно содержать хотя бы одну цифру";
+    }
+
+    if (!hasValueCapitalLetters(password)) {
+        return "Значение должно содержать хотя бы одну заглавную буквы";
+    }
+
+    if (!/^[a-zA-Z0-9]+$/.test(password)) {
+        return "Только латиница и цифры";
+    }
+
+    return null;
+};
+
+export const validateEmail = (email: string): string | null => {
+    if (email === "") {
+        return EMPTY_MESSAGE;
+    }
+
+    if (!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)) {
+        return "Некорректная почта";
+    }
+
+    return null;
+};
+
+export const validateNames = (name: string): string | null => {
+    if (name === "") {
+        return EMPTY_MESSAGE;
+    }
+
+    if (!hasValueCapitalLetters(name[0])) {
+        return "Первая буквы должна быть заглавной";
+    }
+
+    if (!/^[a-zA-Zа-яА-ЯёЁ-]+$/.test(name)) {
+        return "Значение должно содержать латиницу или кириллицу. Может включать дефис";
+    }
+
+    return null;
+};
+
+export const validatePhone = (phone: string): string | null => {
+    if (phone === "") {
+        return EMPTY_MESSAGE;
+    }
+
+    if (!isTargetValueBiggerThanMinValue(phone, 10)) {
+        return MIN_VALUE_MESSAGE(9);
+    }
+
+    if (!isTargetValueLessThanMaxValue(phone, 15)) {
+        return MAX_VALUE_MESSAGE(16);
+    }
+
+    if (!isValueValidNumber(phone.slice(1))) {
+        return "Только цифры";
+    }
+
+    const countPlusSymbols = phone.split("+").length - 1;
+
+    if (!(countPlusSymbols === 1 && phone[0] === "+")) {
+        return "Значение должно начинаться с '+'";
+    }
+
+    return null;
 };

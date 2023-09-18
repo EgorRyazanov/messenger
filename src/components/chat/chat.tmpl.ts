@@ -1,6 +1,7 @@
 import Handlebars from "handlebars";
-import "./chat.scss";
+
 import { converChatDate } from "../../utils/utils.ts";
+import "./chat.scss";
 
 Handlebars.registerHelper("ifMessageAuthorContainer", (message, opts) => {
     if (message.author === "Вы") {

@@ -1,17 +1,17 @@
 import { Block } from "../../utils/block.ts";
-import { TChats } from "../../utils/constants.ts";
+import { Chats } from "../../utils/constants.ts";
 import { chatsListTemplate } from "./chats-list.tmpl.ts";
 
-interface IChatsList {
-    chats: TChats;
+interface ChatsListProps {
+    chats: Chats;
 }
 
-export class ChatsList extends Block<IChatsList> {
-    constructor({ chats }: IChatsList) {
+export class ChatsListComponent extends Block<ChatsListProps> {
+    public constructor({ chats }: ChatsListProps) {
         super({ chats });
     }
 
-    render() {
+    protected render() {
         return this.compile(chatsListTemplate, this.props);
     }
 }

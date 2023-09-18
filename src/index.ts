@@ -1,38 +1,38 @@
+import { LoginPage } from "./pages/login-page/index.ts";
+import { RegistrationPage } from "./pages/register-page/index.ts";
+import { MainPage } from "./pages/main-page/index.ts";
+import { DATA_CHATS, DATA_PROFILE } from "./utils/constants.ts";
+import { ProfilePage } from "./pages/profile-page/index.ts";
+import { ErrorPage } from "./pages/error-page/index.ts";
 import "./styles/index.scss";
-import { Login } from "./pages/login-page/index.ts";
-import { Register } from "./pages/register-page/index.ts";
-import { Main } from "./pages/main-page/index.ts";
-import { data_chats, data_profile } from "./utils/constants.ts";
-import { Profile } from "./pages/profile-page/index.ts";
-import { Error } from "./pages/error-page/index.ts";
 
 const getPage = () => {
     switch (window.location.pathname) {
         case "/login": {
-            return new Login();
+            return new LoginPage();
         }
         case "/register": {
-            return new Register();
+            return new RegistrationPage();
         }
         case "/profile/edit": {
-            return new Profile({ profile: data_profile, url: "/profile" });
+            return new ProfilePage({ profile: DATA_PROFILE, url: "/profile" });
         }
         case "/profile/change-password": {
-            return new Profile({ profile: data_profile, url: "/profile" });
+            return new ProfilePage({ profile: DATA_PROFILE, url: "/profile" });
         }
         case "/profile": {
-            return new Profile({ profile: data_profile, url: "/" });
+            return new ProfilePage({ profile: DATA_PROFILE, url: "/" });
         }
         case "/": {
-            return new Main({ chats: data_chats, activeChat: null });
+            return new MainPage({ chats: DATA_CHATS, activeChat: null });
         }
         default: {
             const pathname = window.location.pathname.slice(1);
-            const activeChat = data_chats.find((person) => person.id === pathname);
+            const activeChat = DATA_CHATS.find((person) => person.id === pathname);
             if (activeChat) {
-                return new Main({ activeChat, chats: data_chats });
+                return new MainPage({ activeChat, chats: DATA_CHATS });
             }
-            return new Error({ title: "404" });
+            return new ErrorPage({ title: "404" });
         }
     }
 };
