@@ -1,23 +1,24 @@
-import "./chats-list.scss";
-import arrow from "../../assets/icons/arrow.svg";
 import Handlebars from "handlebars";
-import { converChatsListsDate } from "../../utils/utils";
 
-Handlebars.registerHelper("lastMessage", function (array) {
+import arrow from "../../assets/icons/arrow.svg";
+import { converChatsListsDate } from "../../utils/utils.ts";
+import "./chats-list.scss";
+
+Handlebars.registerHelper("lastMessage", (array) => {
     if (array && array.length > 0) {
         return array[array.length - 1].message;
     }
     return "";
 });
 
-Handlebars.registerHelper("lastItemDate", function (array) {
+Handlebars.registerHelper("lastItemDate", (array) => {
     if (array && array.length > 0) {
         return converChatsListsDate(array[array.length - 1].date);
     }
     return "";
 });
 
-Handlebars.registerHelper("ifIdEquals", function (id, opts) {
+Handlebars.registerHelper("ifIdEquals", (id, opts) => {
     const activeId = window.location.pathname.slice(1);
     if (activeId === id) {
         return opts.fn("background-color: #FCE8E5");
@@ -25,8 +26,7 @@ Handlebars.registerHelper("ifIdEquals", function (id, opts) {
     return opts.inverse({});
 });
 
-Handlebars.registerHelper("ifLastPerson", function (array, opts) {
-    console.log(array[array.length - 1].author);
+Handlebars.registerHelper("ifLastPerson", (array, opts) => {
     if (array && array.length > 0) {
         if (array[array.length - 1].author !== "Вы") {
             return opts.fn(array[array.length - 1].message);

@@ -5,7 +5,7 @@
         width: 64px;
         height: 100vh;
         background-color: #fbfbfb;
-        border-right: solid 1px vars.$gray-color--light;
+        border-right: solid 1px vars.$gray-color-light;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -22,7 +22,7 @@
                 cursor: pointer;
 
                 &:hover {
-                    background-color: vars.$primary-color--hover;
+                    background-color: vars.$primary-color-hover;
                 }
             }
         }
@@ -40,7 +40,7 @@
         width: 130px;
         height: 130px;
         object-fit: cover;
-        background-color: vars.$gray-color--medium;
+        background-color: vars.$gray-color-medium;
         border-radius: 50%;
         margin-bottom: 21px;
     }
@@ -62,14 +62,21 @@
 
     &__form {
         width: 100%;
+        box-shadow: none;
+        border-radius: none;
+        padding: 0;
+    }
+
+    &__button--hidden {
+        display: none;
     }
 
     &__link {
         padding: 10px 0;
-        border-bottom: vars.$gray-color--light 1px solid;
+        border-bottom: vars.$gray-color-light 1px solid;
 
         &--exit {
-            color: #ff0000;
+            color: #f00;
         }
     }
 

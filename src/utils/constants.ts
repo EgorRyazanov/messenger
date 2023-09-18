@@ -1,6 +1,30 @@
 import defaultImage from "../assets/default-image.jpg";
 
-export const DATE_OPTIONS = {
+export type Chat = {
+    name: string;
+    avatar: string | null;
+    new: number;
+    id: string;
+    messanges: {
+        author: string;
+        message: string;
+        date: string;
+    }[];
+} | null;
+
+export type Chats = Chat[];
+
+export type TProfile = {
+    email: string;
+    login: string;
+    name: string;
+    secondName: string;
+    displayName: string;
+    phone: string;
+    avatar: string;
+};
+
+export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
     year: "numeric",
     weekday: "long",
     month: "long",
@@ -8,10 +32,9 @@ export const DATE_OPTIONS = {
     hour: "numeric",
     minute: "numeric",
     second: "numeric",
-    timezone: "UTC",
 };
 
-export const data_chats = [
+export const DATA_CHATS = [
     {
         name: "Дарья",
         avatar: defaultImage,
@@ -247,7 +270,7 @@ export const data_chats = [
     },
 ];
 
-export const data_profile = {
+export const DATA_PROFILE = {
     email: "aricsybsn@gmail.com",
     login: "aricsy",
     name: "Егор",
