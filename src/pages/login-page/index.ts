@@ -5,6 +5,7 @@ import { LinkComponent } from "../../components/link/index.ts";
 import { Block } from "../../utils/block.ts";
 import { FormComponent } from "../../components/form/index.ts";
 import { validateLogin, validatePassword } from "../../utils/validate.ts";
+import { router } from "../../utils/router.ts";
 
 export class LoginPage extends Block {
     public constructor(props = {}) {
@@ -62,7 +63,7 @@ export class LoginPage extends Block {
             this.handleValidateForm();
 
             if (this.isLoginFormValid()) {
-                window.location.href = "/";
+                router.go("/");
                 this.removeEvents();
             }
         }
