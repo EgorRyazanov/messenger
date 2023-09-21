@@ -39,12 +39,14 @@ class Router {
     private _onRoute(pathname: string) {
         const route = this.getRoute(pathname);
 
-        if (this._currentRoute) {
+        if (this._currentRoute != null) {
             this._currentRoute.leave();
         }
         if (route != null) {
             this._currentRoute = route;
             route.render();
+        } else {
+            this.go("error");
         }
     }
 
