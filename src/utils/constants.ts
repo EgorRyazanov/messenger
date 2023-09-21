@@ -14,7 +14,8 @@ export type Chat = {
 
 export type Chats = Chat[];
 
-export type TProfile = {
+export type User = {
+    id: string;
     email: string;
     login: string;
     name: string;
