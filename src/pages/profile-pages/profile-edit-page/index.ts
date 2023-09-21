@@ -4,8 +4,8 @@ import { ButtonComponent, ButtonIconComponent } from "../../../components/button
 import { Block } from "../../../utils/block.ts";
 import { validateEmail, validateLogin, validateNames, validatePhone } from "../../../utils/validate.ts";
 import { FormComponent } from "../../../components/form/index.ts";
-import { User } from "../../../utils/constants.ts";
 import backIcon from "../../../assets/icons/back.svg";
+import { User } from "../../../core/models/user.ts";
 import "../profile.scss";
 
 interface ProfileEditProps {
@@ -36,7 +36,7 @@ export class ProfileEditPage extends Block<ProfileEditProps> {
             new InputComponent({
                 name: "first_name",
                 labelValue: "Имя",
-                value: this.props.profile.name,
+                value: this.props.profile.firstName,
                 validate: validateNames,
             }),
             new InputComponent({

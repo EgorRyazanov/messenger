@@ -1,4 +1,4 @@
-import { User } from "./constants.ts";
+import { User } from "../core/models/user.ts";
 import { EventBus } from "./event-bus.ts";
 import { set } from "./helpers.ts";
 
@@ -6,7 +6,7 @@ export enum StoreEvents {
     Updated = "updated",
 }
 
-interface State {
+export interface State {
     user: User;
 }
 
@@ -23,3 +23,5 @@ export class Store extends EventBus {
         return this.state;
     }
 }
+
+export const store = new Store();

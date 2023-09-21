@@ -52,8 +52,8 @@ export const chatsListTemplate = `
                         <div class="item__avatar"></div>
                     {{/if}}
                     <div class="item__text-container">
-                        <h5 class="item__title">{{this.name}}</h5>
-                        <p class="item__text">{{lastMessage this}}</p>
+                        <h5 class="item__title">{{this.title}}</h5>
+                        <p class="item__text">{{this.lastMessage.content}}</p>
                         {{#ifLastPerson this.messanges}}
                             <p class="item__text">{{this}}</p>
                         {{else}}

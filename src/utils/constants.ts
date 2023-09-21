@@ -1,30 +1,5 @@
 import defaultImage from "../assets/default-image.jpg";
 
-export type Chat = {
-    name: string;
-    avatar: string | null;
-    new: number;
-    id: string;
-    messanges: {
-        author: string;
-        message: string;
-        date: string;
-    }[];
-} | null;
-
-export type Chats = Chat[];
-
-export type User = {
-    id: string;
-    email: string;
-    login: string;
-    name: string;
-    secondName: string;
-    displayName: string;
-    phone: string;
-    avatar: string;
-};
-
 export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
     year: "numeric",
     weekday: "long",

@@ -1,9 +1,9 @@
+import { Chat } from "../../core/models/chat.ts";
 import { Block } from "../../utils/block.ts";
-import { Chats } from "../../utils/constants.ts";
 import { chatsListTemplate } from "./chats-list.tmpl.ts";
 
 interface ChatsListProps {
-    chats: Chats;
+    chats: Chat[];
 }
 
 export class ChatsListComponent extends Block<ChatsListProps> {

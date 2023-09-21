@@ -3,9 +3,9 @@ import { InputComponent } from "../../../components/input/index.ts";
 import { ButtonComponent, ButtonIconComponent } from "../../../components/button/index.ts";
 import { Block } from "../../../utils/block.ts";
 import { FormComponent } from "../../../components/form/index.ts";
-import { User } from "../../../utils/constants.ts";
 import { validatePassword } from "../../../utils/validate.ts";
 import backIcon from "../../../assets/icons/back.svg";
+import { User } from "../../../core/models/user.ts";
 import "../profile.scss";
 
 interface ProfileChangePasswordProps {

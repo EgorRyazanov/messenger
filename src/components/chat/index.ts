@@ -6,7 +6,7 @@ import sendMessage from "../../assets/icons/send-message.svg";
 import { ButtonIconComponent } from "../button/index.ts";
 import { InputComponent } from "../input/index.ts";
 import { FormComponent } from "../form/index.ts";
-import { Chat } from "../../utils/constants.ts";
+import { Chat } from "../../core/models/chat.ts";
 import "./chat.scss";
 
 interface ChatProps {
