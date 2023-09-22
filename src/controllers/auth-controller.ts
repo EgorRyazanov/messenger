@@ -1,9 +1,9 @@
 import API, { AuthAPI } from "../api/auth.ts";
 import { LoginDto } from "../core/DTO/auth/login.dto.ts";
 import { RegistrationDto } from "../core/DTO/auth/registration.dto.ts";
-import { ServerError, isServerError } from "../core/DTO/server-error.dto.ts";
+import { isServerError } from "../core/DTO/server-error.dto.ts";
 import { ErrorMapper } from "../core/mappers/error.mapper.ts";
-import { CustomError } from "../core/models/error.ts";
+import { UserMapper } from "../core/mappers/user.mapper.ts";
 import { Routes } from "../index.ts";
 import { router } from "../utils/router.ts";
 import { store } from "../utils/store.ts";
@@ -44,22 +44,22 @@ export class AuthController {
     }
 
     public async fetchUser() {
-        const user = await this.api.read();
+        const userDto = await this.api.read();
 
-        store.set("user", user);
+        store.set("user", UserMapper.fromDto(userDto));
     }
 
-    // async logout() {
-    //     try {
-    //         MessagesController.closeAll();
+    async logout() {
+        try {
+            await this.api.logout();
 
-    //         await this.api.logout();
-
-    //         router.go("/");
-    //     } catch (e: any) {
-    //         console.error(e.message);
-    //     }
-    // }
+            router.go(Routes.Login);
+        } catch (e: unknown) {
+            if (isServerError(e)) {
+                throw ErrorMapper.fromDto(e);
+            }
+        }
+    }
 }
 
 export default new AuthController();

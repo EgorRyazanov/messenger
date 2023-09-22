@@ -6,28 +6,24 @@ import { Block } from "../../../utils/block.ts";
 import { validateEmail, validateLogin, validateNames, validatePhone } from "../../../utils/validate.ts";
 import { FormComponent } from "../../../components/form/index.ts";
 import backIcon from "../../../assets/icons/back.svg";
-import { User } from "../../../core/models/user.ts";
 import "../profile.scss";
+import { withStore, withUser } from "../../../utils/with-store.ts";
 
-interface ProfileProps {
-    profile: User;
-}
-
-export class ProfilePage extends Block<ProfileProps> {
+class ProfileComponent extends Block {
     protected init() {
         const inputs = [
             new InputComponent({
                 name: "login",
                 labelValue: "Логин",
                 isDisabled: true,
-                value: this.props.profile.login,
+                value: this.props.login,
                 validate: validateLogin,
             }),
             new InputComponent({
                 name: "email",
                 labelValue: "Почта",
                 isDisabled: true,
-                value: this.props.profile.email,
+                value: this.props.email,
                 type: "email",
                 validate: validateEmail,
             }),
@@ -35,27 +31,27 @@ export class ProfilePage extends Block<ProfileProps> {
                 name: "first_name",
                 labelValue: "Имя",
                 isDisabled: true,
-                value: this.props.profile.firstName,
+                value: this.props.firstName,
                 validate: validateNames,
             }),
             new InputComponent({
                 name: "second_name",
                 labelValue: "Фамилия",
                 isDisabled: true,
-                value: this.props.profile.secondName,
+                value: this.props.secondName,
                 validate: validateNames,
             }),
             new InputComponent({
                 name: "display_name",
                 labelValue: "Имя в чате",
                 isDisabled: true,
-                value: this.props.profile.displayName,
+                value: this.props.displayName,
             }),
             new InputComponent({
                 name: "phone",
                 labelValue: "Телефон",
                 isDisabled: true,
-                value: this.props.profile.phone,
+                value: this.props.phone,
                 inputContainerClasses: "input--last",
                 validate: validatePhone,
             }),
@@ -84,3 +80,5 @@ export class ProfilePage extends Block<ProfileProps> {
         return this.compile(profileTemplate, this.props);
     }
 }
+
+export const ProfilePage = withUser(ProfileComponent);

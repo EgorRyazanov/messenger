@@ -7,12 +7,12 @@ export const profileTemplate = `
         </nav>
         <div class="profile__container">
             <div class="profile__data">
-                {{#if profile.avatar}}
-                    <img class="profile__avatar" src='{{profile.avatar}}' alt="Аватар">
+                {{#if avatar}}
+                    <img class="profile__avatar" src='{{avatar}}' alt="Аватар">
                 {{else}} 
                     <div class="profile__avatar"></div>
                 {{/if}}
-                <h4 class="profile__name">{{profile.displayName}}</h4>
+                <h4 class="profile__name">{{displayName}}</h4>
                 {{{form}}}
                 <div class="profile__link">
                     {{{linkEdit}}}

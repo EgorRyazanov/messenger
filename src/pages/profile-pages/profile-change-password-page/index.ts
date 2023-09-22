@@ -4,20 +4,11 @@ import { ButtonComponent, ButtonIconComponent } from "../../../components/button
 import { Block } from "../../../utils/block.ts";
 import { FormComponent } from "../../../components/form/index.ts";
 import { validatePassword } from "../../../utils/validate.ts";
+import { withUser } from "../../../utils/with-store.ts";
 import backIcon from "../../../assets/icons/back.svg";
-import { User } from "../../../core/models/user.ts";
 import "../profile.scss";
 
-interface ProfileChangePasswordProps {
-    profile: User;
-}
-
-export class ProfileChangePasswordPage extends Block<ProfileChangePasswordProps> {
-    public constructor(props: ProfileChangePasswordProps) {
-        super(props);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
-
+export class ProfileChangePasswordComponent extends Block {
     protected init() {
         const inputs = [
             new InputComponent({ name: "old_password", labelValue: "Старый пароль", type: "password", validate: validatePassword }),
@@ -97,3 +88,5 @@ export class ProfileChangePasswordPage extends Block<ProfileChangePasswordProps>
         return this.compile(profileTemplate, this.props);
     }
 }
+
+export const ProfileChangePasswordPage = withUser(ProfileChangePasswordComponent);

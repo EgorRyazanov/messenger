@@ -1,7 +1,7 @@
 import { LoginPage } from "./pages/login-page/index.ts";
 import { RegistrationPage } from "./pages/registration-page/index.ts";
 import { MainPage } from "./pages/main-page/index.ts";
-import { DATA_CHATS, DATA_PROFILE } from "./utils/constants.ts";
+import { DATA_CHATS } from "./utils/constants.ts";
 import { ProfilePage } from "./pages/profile-pages/profile-page/index.ts";
 import { ErrorPage } from "./pages/error-page/index.ts";
 import { router } from "./utils/router.ts";
@@ -30,9 +30,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             .use(Routes.Login, LoginPage)
             .use(Routes.Register, RegistrationPage)
             .use(Routes.Error, ErrorPage)
-            .use(Routes.ProfileChangePassword, ProfileChangePasswordPage, { profile: DATA_PROFILE })
-            .use(Routes.ProfileEdit, ProfileEditPage, { profile: DATA_PROFILE })
-            .use(Routes.Profile, ProfilePage, { profile: DATA_PROFILE });
+            .use(Routes.ProfileChangePassword, ProfileChangePasswordPage)
+            .use(Routes.ProfileEdit, ProfileEditPage)
+            .use(Routes.Profile, ProfilePage);
 
         switch (window.location.pathname) {
             case Routes.Login:
