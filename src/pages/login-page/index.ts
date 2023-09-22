@@ -5,7 +5,11 @@ import { LinkComponent } from "../../components/link/index.ts";
 import { Block } from "../../utils/block.ts";
 import { FormComponent } from "../../components/form/index.ts";
 import { validateLogin, validatePassword } from "../../utils/validate.ts";
+import { LoginDto } from "../../core/DTO/auth/login.dto.ts";
+import AuthController from "../../controllers/auth-controller.ts";
 import { router } from "../../utils/router.ts";
+import { Routes } from "../../index.ts";
+import { CustomError } from "../../core/models/error.ts";
 
 export class LoginPage extends Block {
     public constructor(props = {}) {
@@ -52,19 +56,22 @@ export class LoginPage extends Block {
         return false;
     };
 
-    private onSubmit(e: Event) {
+    private async onSubmit(e: Event) {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
-            const formData = new FormData(e.target);
-            const form: Record<string, FormDataEntryValue> = {};
-            for (const [key, value] of formData.entries()) {
-                form[key] = value;
-            }
             this.handleValidateForm();
+            const form = this.children.form as FormComponent;
+            form.props.error = "";
+            const values = form.getValues<LoginDto>();
 
-            if (this.isLoginFormValid()) {
-                router.go("/");
-                this.removeEvents();
+            if (this.isLoginFormValid() && values != null) {
+                try {
+                    await AuthController.login(values);
+                } catch (e: unknown) {
+                    if (e instanceof CustomError) {
+                        form.props.error = e.reason;
+                    }
+                }
             }
         }
     }

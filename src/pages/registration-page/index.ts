@@ -1,10 +1,13 @@
-import { registerPageTemplate } from "./register-page.tmpl.ts";
+import { registerPageTemplate } from "./registration-page.tmpl.ts";
 import { ButtonComponent } from "../../components/button/index.ts";
 import { InputComponent } from "../../components/input/index.ts";
 import { LinkComponent } from "../../components/link/index.ts";
 import { Block } from "../../utils/block.ts";
 import { FormComponent } from "../../components/form/index.ts";
 import { validateEmail, validateLogin, validateNames, validatePassword, validatePhone } from "../../utils/validate.ts";
+import { RegistrationDto } from "../../core/DTO/auth/registration.dto.ts";
+import AuthController from "../../controllers/auth-controller.ts";
+import { CustomError } from "../../core/models/error.ts";
 
 export class RegistrationPage extends Block {
     public constructor(props = {}) {
@@ -63,7 +66,7 @@ export class RegistrationPage extends Block {
         }
     };
 
-    private isRegisterFormValid = (): boolean => {
+    private isRegistrationFormValid = (): boolean => {
         if (this.children.form != null && this.children.form instanceof FormComponent) {
             return this.children.form.isFormValid();
         }
@@ -71,20 +74,23 @@ export class RegistrationPage extends Block {
         return false;
     };
 
-    private onSubmit(e: Event) {
+    private async onSubmit(e: Event) {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
-            const formData = new FormData(e.target as HTMLFormElement);
-            const form: Record<string, FormDataEntryValue> = {};
-            for (const [key, value] of formData.entries()) {
-                form[key] = value;
-            }
+            const form = this.children.form as FormComponent;
+            form.props.error = "";
 
             this.handleValidateForm();
+            const values = form.getValues<RegistrationDto>();
 
-            if (this.isRegisterFormValid()) {
-                window.location.href = "/";
-                this.removeEvents();
+            if (this.isRegistrationFormValid() && values != null) {
+                try {
+                    await AuthController.register(values);
+                } catch (e: unknown) {
+                    if (e instanceof CustomError) {
+                        form.props.error = e.reason;
+                    }
+                }
             }
         }
     }

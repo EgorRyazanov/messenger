@@ -249,7 +249,7 @@ export const DATA_CHATS = [
 export const DATA_PROFILE = {
     email: "aricsybsn@gmail.com",
     login: "aricsy",
-    name: "Егор",
+    firstName: "Егор",
     secondName: "Рязанов",
     displayName: "Егор",
     phone: "79999999999",

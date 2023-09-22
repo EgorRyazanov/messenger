@@ -18,7 +18,7 @@ export class Block<P extends Record<string, any> = any> {
     private eventBus: () => EventBus;
     private _element: HTMLElement | null = null;
 
-    constructor(propsWithChildren: P) {
+    public constructor(propsWithChildren: P) {
         const eventBus = new EventBus();
 
         const { props, children } = this._getChildrenAndProps(propsWithChildren);
@@ -30,7 +30,7 @@ export class Block<P extends Record<string, any> = any> {
         eventBus.emit(Block.EVENTS.INIT);
     }
 
-    protected removeEvents() {
+    public removeEvents() {
         this._removeEvents();
         Object.keys(this.children).forEach((child) => {
             if (Array.isArray(this.children[child])) {
@@ -211,6 +211,7 @@ export class Block<P extends Record<string, any> = any> {
                 const oldTarget = { ...target };
 
                 if (key in target) {
+                    console.log(key, value);
                     target[key as keyof P] = value;
                     self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
                     return true;

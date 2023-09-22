@@ -39,7 +39,7 @@ export class Route {
 
     public leave() {
         if (this._block) {
-            this._block = null;
+            this.clearRoot();
         }
     }
 
@@ -51,6 +51,17 @@ export class Route {
         if (!this._block) {
             this._block = new this._blockClass(this._props);
             render(this._props.rootQuery, this._block);
+        }
+    }
+
+    private clearRoot() {
+        if (this._block != null) {
+            this._block.removeEvents();
+            this._block = null;
+            const root = document.querySelector(this._props.rootQuery);
+            if (root != null) {
+                root.innerHTML = "";
+            }
         }
     }
 }

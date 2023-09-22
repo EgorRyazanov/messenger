@@ -78,8 +78,12 @@ export class InputComponent extends Block<InputProps> {
         }
     }
 
-    public get value() {
+    public get value(): string {
         return this.element?.querySelector("input")?.value ?? "";
+    }
+
+    public get name() {
+        return this.props.name;
     }
 
     protected render() {

@@ -1,4 +1,4 @@
-type PlainObject<T = unknown> = {
+export type PlainObject<T = unknown> = {
     [k in string]: T;
 };
 
@@ -37,7 +37,7 @@ function getParams(data: PlainObject | [], parentKey?: string) {
     return result;
 }
 
-export function queryString(data: PlainObject): string {
+export function queryString(data: unknown): string {
     if (!isPlainObject(data)) {
         throw new Error("input must be an object");
     }
