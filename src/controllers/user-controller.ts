@@ -1,25 +1,29 @@
-import API, { AuthAPI } from "../api/auth.ts";
-import { LoginDto } from "../core/DTO/auth/login.dto.ts";
-import { RegistrationDto } from "../core/DTO/auth/registration.dto.ts";
+import API, { UserAPI } from "../api/user.ts";
 import { isServerError } from "../core/DTO/server-error.dto.ts";
+import { UserDto } from "../core/DTO/user.dto.ts";
 import { ErrorMapper } from "../core/mappers/error.mapper.ts";
 import { UserMapper } from "../core/mappers/user.mapper.ts";
 import { Routes } from "../index.ts";
 import { router } from "../utils/router.ts";
 import { store } from "../utils/store.ts";
 
-export class AuthController {
-    private readonly api: AuthAPI;
+export interface PasswordUpdate {
+    oldPassword: string;
+    newPassword: string;
+}
+
+export class UserController {
+    private readonly api: UserAPI;
 
     public constructor() {
         this.api = API;
     }
 
-    public async login(data: LoginDto) {
+    public async update(data: UserDto) {
         try {
-            await this.api.login(data);
+            const userDto = await this.api.update(data);
 
-            await this.fetchUser();
+            store.set("user", UserMapper.fromDto(userDto));
 
             router.go(Routes.Profile);
         } catch (e: unknown) {
@@ -29,11 +33,9 @@ export class AuthController {
         }
     }
 
-    public async register(data: RegistrationDto) {
+    public async updatePassword(data: PasswordUpdate) {
         try {
-            await this.api.register(data);
-
-            await this.fetchUser();
+            await this.api.updatePassword(data);
 
             router.go(Routes.Profile);
         } catch (e: unknown) {
@@ -43,17 +45,11 @@ export class AuthController {
         }
     }
 
-    public async fetchUser() {
-        const userDto = await this.api.read();
-
-        store.set("user", UserMapper.fromDto(userDto));
-    }
-
-    public async logout() {
+    public async updateAvatar(data: File) {
         try {
-            await this.api.logout();
+            const userDto = await this.api.updateAvatar(data);
 
-            router.go(Routes.Login);
+            store.set("user", UserMapper.fromDto(userDto));
         } catch (e: unknown) {
             if (isServerError(e)) {
                 throw ErrorMapper.fromDto(e);
@@ -62,4 +58,4 @@ export class AuthController {
     }
 }
 
-export default new AuthController();
+export default new UserController();

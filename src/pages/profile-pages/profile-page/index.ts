@@ -7,7 +7,11 @@ import { validateEmail, validateLogin, validateNames, validatePhone } from "../.
 import { FormComponent } from "../../../components/form/index.ts";
 import backIcon from "../../../assets/icons/back.svg";
 import "../profile.scss";
-import { withStore, withUser } from "../../../utils/with-store.ts";
+import { withUser } from "../../../utils/with-store.ts";
+import AuthController from "../../../controllers/auth-controller.ts";
+import { AvatarComponent } from "../../../components/avatar/index.ts";
+import userController from "../../../controllers/user-controller.ts";
+import { CustomError } from "../../../core/models/error.ts";
 
 class ProfileComponent extends Block {
     protected init() {
@@ -69,10 +73,25 @@ class ProfileComponent extends Block {
 
         this.children = {
             form,
+            avatar: new AvatarComponent({
+                id: "file",
+                isActive: false,
+                avatar: this.props.avatar ? `https://ya-praktikum.tech/api/v2/resources${this.props.avatar}` : null,
+                inputContainerClasses: "profile__avatar",
+            }),
             backButton: new ButtonIconComponent({ url: "/", img: backIcon, type: "submit" }),
             linkEdit: new LinkComponent({ text: "Изменить данные?", url: "/profile/edit" }),
             linkPassword: new LinkComponent({ text: "Изменить пароль?", url: "/profile/change-password" }),
-            linkExit: new LinkComponent({ text: "Выйти?", url: "/", linkClasses: "profile__link--exit" }),
+            linkExit: new LinkComponent({
+                events: {
+                    click: async (event: Event) => {
+                        event.preventDefault();
+                        await AuthController.logout();
+                    },
+                },
+                text: "Выйти?",
+                linkClasses: "profile__link--exit",
+            }),
         };
     }
 

@@ -211,7 +211,6 @@ export class Block<P extends Record<string, any> = any> {
                 const oldTarget = { ...target };
 
                 if (key in target) {
-                    console.log(key, value);
                     target[key as keyof P] = value;
                     self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
                     return true;

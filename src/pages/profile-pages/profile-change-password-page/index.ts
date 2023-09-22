@@ -6,13 +6,16 @@ import { FormComponent } from "../../../components/form/index.ts";
 import { validatePassword } from "../../../utils/validate.ts";
 import { withUser } from "../../../utils/with-store.ts";
 import backIcon from "../../../assets/icons/back.svg";
+import userController, { PasswordUpdate } from "../../../controllers/user-controller.ts";
+import { CustomError } from "../../../core/models/error.ts";
+import { AvatarComponent } from "../../../components/avatar/index.ts";
 import "../profile.scss";
 
 export class ProfileChangePasswordComponent extends Block {
     protected init() {
         const inputs = [
-            new InputComponent({ name: "old_password", labelValue: "Старый пароль", type: "password", validate: validatePassword }),
-            new InputComponent({ name: "password", labelValue: "Новый пароль", type: "password", validate: validatePassword }),
+            new InputComponent({ name: "oldPassword", labelValue: "Старый пароль", type: "password", validate: validatePassword }),
+            new InputComponent({ name: "newPassword", labelValue: "Новый пароль", type: "password", validate: validatePassword }),
             new InputComponent({
                 name: "repeat_password",
                 labelValue: "Повторите новый пароль",
@@ -21,7 +24,7 @@ export class ProfileChangePasswordComponent extends Block {
                 validate: (value: string) => {
                     const { form } = this.children;
                     if (form instanceof FormComponent) {
-                        const password = (form.children.inputs as InputComponent[]).find((input) => input.props.name === "password");
+                        const password = (form.children.inputs as InputComponent[]).find((input) => input.props.name === "newPassword");
                         if (password?.value === value) {
                             return null;
                         }
@@ -48,6 +51,12 @@ export class ProfileChangePasswordComponent extends Block {
 
         this.children = {
             form,
+            avatar: new AvatarComponent({
+                id: "file",
+                isActive: false,
+                avatar: this.props.avatar ? `https://ya-praktikum.tech/api/v2/resources${this.props.avatar}` : null,
+                inputContainerClasses: "profile__avatar",
+            }),
             backButton: new ButtonIconComponent({ url: "/profile", img: backIcon, type: "submit" }),
         };
     }
@@ -66,20 +75,23 @@ export class ProfileChangePasswordComponent extends Block {
         return false;
     };
 
-    private onSubmit(e: Event) {
+    private async onSubmit(e: Event) {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
-            const formData = new FormData(e.target as HTMLFormElement);
-            const form: Record<string, FormDataEntryValue> = {};
-            for (const [key, value] of formData.entries()) {
-                form[key] = value;
-            }
+            const form = this.children.form as FormComponent;
+            form.props.error = "";
+            const values = form.getValues<PasswordUpdate>();
 
             this.handleValidateForm();
 
-            if (this.isProfileFormValid()) {
-                window.location.href = "/profile";
-                this.removeEvents();
+            if (this.isProfileFormValid() && values != null) {
+                try {
+                    await userController.updatePassword(values);
+                } catch (event: unknown) {
+                    if (event instanceof CustomError) {
+                        form.props.error = event.reason;
+                    }
+                }
             }
         }
     }

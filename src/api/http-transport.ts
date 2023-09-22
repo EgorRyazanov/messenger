@@ -46,7 +46,6 @@ export class HTTPTransport {
 
             xhr.withCredentials = true;
             xhr.timeout = timeout;
-            xhr.setRequestHeader("Content-Type", "application/json");
             xhr.responseType = "json";
 
             xhr.onreadystatechange = () => {
@@ -65,7 +64,12 @@ export class HTTPTransport {
 
             if (method === ApiMethods.Get || data == null) {
                 xhr.send();
+            } else if (data instanceof File) {
+                const formData = new FormData();
+                formData.append("avatar", data);
+                xhr.send(formData);
             } else {
+                xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.send(JSON.stringify(data));
             }
         });

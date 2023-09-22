@@ -16,7 +16,7 @@ export class AuthAPI extends BaseAPI {
         return this.http.post<void>("/signin", { data });
     }
 
-    public read() {
+    public async read() {
         return this.http.get<UserDto>("/user");
     }
 

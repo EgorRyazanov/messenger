@@ -6,8 +6,8 @@ import { Block } from "../../utils/block.ts";
 import { FormComponent } from "../../components/form/index.ts";
 import { validateEmail, validateLogin, validateNames, validatePassword, validatePhone } from "../../utils/validate.ts";
 import { RegistrationDto } from "../../core/DTO/auth/registration.dto.ts";
-import AuthController from "../../controllers/auth-controller.ts";
 import { CustomError } from "../../core/models/error.ts";
+import AuthController from "../../controllers/auth-controller.ts";
 
 export class RegistrationPage extends Block {
     public constructor(props = {}) {
@@ -86,9 +86,9 @@ export class RegistrationPage extends Block {
             if (this.isRegistrationFormValid() && values != null) {
                 try {
                     await AuthController.register(values);
-                } catch (e: unknown) {
-                    if (e instanceof CustomError) {
-                        form.props.error = e.reason;
+                } catch (event: unknown) {
+                    if (event instanceof CustomError) {
+                        form.props.error = event.reason;
                     }
                 }
             }

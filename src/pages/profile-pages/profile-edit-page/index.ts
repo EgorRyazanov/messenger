@@ -6,6 +6,10 @@ import { validateEmail, validateLogin, validateNames, validatePhone } from "../.
 import { FormComponent } from "../../../components/form/index.ts";
 import backIcon from "../../../assets/icons/back.svg";
 import { withUser } from "../../../utils/with-store.ts";
+import UserController from "../../../controllers/user-controller.ts";
+import { UserDto } from "../../../core/DTO/user.dto.ts";
+import { CustomError } from "../../../core/models/error.ts";
+import { AvatarComponent } from "../../../components/avatar/index.ts";
 import "../profile.scss";
 
 export class ProfileEditComponent extends Block {
@@ -67,6 +71,36 @@ export class ProfileEditComponent extends Block {
         this.children = {
             form,
             backButton: new ButtonIconComponent({ url: "/profile", img: backIcon, type: "submit" }),
+            avatar: new AvatarComponent({
+                id: "file",
+                isActive: true,
+                avatar: this.props.avatar ? `https://ya-praktikum.tech/api/v2/resources${this.props.avatar}` : null,
+                inputContainerClasses: "profile__avatar",
+                events: {
+                    click: async () => {
+                        const inputComponent = document.getElementById("file") as HTMLInputElement;
+                        inputComponent?.click();
+                        form.props.error = "";
+                        inputComponent?.addEventListener("change", async () => {
+                            const files = inputComponent?.files;
+                            if (files != null) {
+                                try {
+                                    await UserController.updateAvatar(files[0]);
+                                    const avatar = this.children.avatar as Block;
+                                    avatar.setProps({
+                                        ...avatar.props,
+                                        avatar: this.props.avatar ? `https://ya-praktikum.tech/api/v2/resources${this.props.avatar}` : null,
+                                    });
+                                } catch (e: unknown) {
+                                    if (e instanceof CustomError) {
+                                        form.props.error = e.reason;
+                                    }
+                                }
+                            }
+                        });
+                    },
+                },
+            }),
         };
     }
 
@@ -84,20 +118,23 @@ export class ProfileEditComponent extends Block {
         return false;
     };
 
-    private onSubmit(e: Event) {
+    private async onSubmit(e: Event) {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
-            const formData = new FormData(e.target as HTMLFormElement);
-            const form: Record<string, FormDataEntryValue> = {};
-            for (const [key, value] of formData.entries()) {
-                form[key] = value;
-            }
+            const form = this.children.form as FormComponent;
+            form.props.error = "";
+            const values = form.getValues<UserDto>();
 
             this.handleValidateForm();
 
-            if (this.isProfileFormValid()) {
-                window.location.href = "/profile";
-                this.removeEvents();
+            if (this.isProfileFormValid() && values != null) {
+                try {
+                    await UserController.update(values);
+                } catch (event: unknown) {
+                    if (event instanceof CustomError) {
+                        form.props.error = event.reason;
+                    }
+                }
             }
         }
     }

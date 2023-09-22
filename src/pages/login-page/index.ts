@@ -7,8 +7,6 @@ import { FormComponent } from "../../components/form/index.ts";
 import { validateLogin, validatePassword } from "../../utils/validate.ts";
 import { LoginDto } from "../../core/DTO/auth/login.dto.ts";
 import AuthController from "../../controllers/auth-controller.ts";
-import { router } from "../../utils/router.ts";
-import { Routes } from "../../index.ts";
 import { CustomError } from "../../core/models/error.ts";
 
 export class LoginPage extends Block {
@@ -67,9 +65,9 @@ export class LoginPage extends Block {
             if (this.isLoginFormValid() && values != null) {
                 try {
                     await AuthController.login(values);
-                } catch (e: unknown) {
-                    if (e instanceof CustomError) {
-                        form.props.error = e.reason;
+                } catch (event: unknown) {
+                    if (event instanceof CustomError) {
+                        form.props.error = event.reason;
                     }
                 }
             }
