@@ -3,6 +3,7 @@ import { isServerError } from "../core/DTO/server-error.dto.ts";
 import { ChatMapper } from "../core/mappers/chat.mapper.ts";
 import { ErrorMapper } from "../core/mappers/error.mapper.ts";
 import { store } from "../utils/store.ts";
+import messagesController from "./messages-controller.ts";
 
 class ChatsController {
     private readonly api: ChatsAPI;
@@ -26,16 +27,14 @@ class ChatsController {
     public async fetchChats(title?: string) {
         const data = title != null ? { title } : undefined;
         const chatsDto = await this.api.read(data);
+        const chats = chatsDto.map((chatDto) => ChatMapper.fromDto(chatDto));
+        chats.map(async (chat) => {
+            const token = await this.getToken(chat.id);
 
-        // chats.map(async (chat) => {
-        //     const token = await this.getToken(chat.id);
+            await messagesController.connect(chat.id, token);
+        });
 
-        //     // await MessagesController.connect(chat.id, token);
-        // });
-        store.set(
-            "chats",
-            chatsDto.map((chatDto) => ChatMapper.fromDto(chatDto)),
-        );
+        store.set("chats", chats);
     }
 
     public addUserToChat(id: number, userId: number) {

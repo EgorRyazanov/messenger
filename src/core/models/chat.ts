@@ -1,4 +1,4 @@
-import { Message } from "./message.ts";
+import { LastMessage } from "./message.ts";
 
 export interface Chat {
     id: number;
@@ -6,5 +6,5 @@ export interface Chat {
     avatar: string;
     unreadCount: number;
     createdBy: number;
-    lastMessage: Message | null;
+    lastMessage: LastMessage | null;
 }

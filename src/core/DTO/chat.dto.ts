@@ -1,4 +1,4 @@
-import { MessageDto } from "./message.dto.ts";
+import { LastMessageDto } from "./message.dto.ts";
 
 export interface ChatDto {
     id: number;
@@ -6,5 +6,5 @@ export interface ChatDto {
     avatar: string;
     unread_count: number;
     created_by: number;
-    last_message: MessageDto | null;
+    last_message: LastMessageDto | null;
 }

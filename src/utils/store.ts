@@ -1,4 +1,5 @@
 import { Chat } from "../core/models/chat.ts";
+import { Message } from "../core/models/message.ts";
 import { User } from "../core/models/user.ts";
 import { EventBus } from "./event-bus.ts";
 import { set } from "./helpers.ts";
@@ -11,6 +12,7 @@ export interface State {
     user: User | null;
     chats: Chat[];
     selectedChat: Chat["id"] | null;
+    messages: Record<Chat["id"], Message[]>;
 }
 
 export class Store extends EventBus {
@@ -18,6 +20,7 @@ export class Store extends EventBus {
         user: null,
         chats: [],
         selectedChat: null,
+        messages: {},
     } as State;
 
     public set(keypath: string, data: unknown) {
