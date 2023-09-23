@@ -16,7 +16,7 @@ function isPlainObject(value: unknown): value is PlainObject {
 }
 
 function isArrayOrObject(value: unknown): value is PlainObject {
-    return isPlainObject(value);
+    return isPlainObject(value) || Array.isArray(value);
 }
 
 function getKey(key: string, parentKey?: string) {

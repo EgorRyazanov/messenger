@@ -37,10 +37,7 @@
             &__image {
                 width: 34px;
                 height: 34px;
-                background-color: vars.$gray-color-medium;
-                border-radius: 50%;
                 margin-right: 10px;
-                object-fit: cover;
             }
 
             &__user {
@@ -67,51 +64,8 @@
 
     &__main {
         height: calc(100vh - 110px);
-        overflow-y: auto;
-
-        .main {
-            &__message {
-                background-color: vars.$gray-color-medium;
-                padding: 11px;
-                color: vars.$base-text-color;
-                border-radius: 8px;
-                max-width: 402px;
-                margin-bottom: 10px;
-                font-size: 12px;
-                line-height: 15px;
-
-                &:last-child {
-                    margin-bottom: 30px;
-                }
-
-                &--you {
-                    background-color: vars.$primary-color-pale;
-                    margin-left: auto;
-                }
-            }
-
-            &__date {
-                text-align: right;
-                font-size: 9px;
-                line-height: 9px;
-
-                &--you {
-                    color: vars.$primary-color;
-                }
-            }
-        }
-    }
-
-    &__main::-webkit-scrollbar {
-        width: 3px;
-    }
-
-    &__main::-webkit-scrollbar-thumb {
-        background-color: rgb(219 112 147 / 50%);
-    }
-
-    &__main::-webkit-scrollbar-track {
-        background-color: transparent;
+        overflow-x: hidden;
+        overflow-y: scroll;
     }
 
     &__footer {
@@ -136,6 +90,7 @@
             &__message {
                 background-color: vars.$gray-color-medium;
                 width: 100%;
+                word-wrap: break-word;
                 border-radius: 30px;
                 padding: 10px;
                 margin-right: 10px;

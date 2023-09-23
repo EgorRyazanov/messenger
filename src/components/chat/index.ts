@@ -6,21 +6,15 @@ import sendMessage from "../../assets/icons/send-message.svg";
 import { ButtonIconComponent } from "../button/index.ts";
 import { InputComponent } from "../input/index.ts";
 import { FormComponent } from "../form/index.ts";
-import { Chat } from "../../core/models/chat.ts";
+import { withChats, withMessages, withSelectedChat } from "../../utils/with-store.ts";
+import { Chat as ChatType } from "../../core/models/chat.ts";
+import { AvatarComponent } from "../avatar/index.ts";
+import messagesController from "../../controllers/messages-controller.ts";
+import { MessagesContainerComponent } from "../messages-container/index.ts";
+import { isEqual } from "../../utils/helpers.ts";
 import "./chat.scss";
 
-export class ChatComponent extends Block {
-    public constructor({ activeChat }: { activeChat: Chat }) {
-        const props = {
-            activeChat,
-
-            messageSettingButton: new ButtonIconComponent({ img: messageSettings, classNames: "footer__message-setting" }),
-            userSettingButton: new ButtonIconComponent({ img: userSettingsIcon, classNames: "header__user-settings" }),
-        };
-        super(props);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
-
+class Chat extends Block {
     protected init() {
         const inputs = [
             new InputComponent({
@@ -45,41 +39,65 @@ export class ChatComponent extends Block {
             events: formEvents,
             button: new ButtonIconComponent({ img: sendMessage, type: "submit" }),
         });
+        this.children.messageSettingButton = new ButtonIconComponent({ img: messageSettings, classNames: "footer__message-setting" });
+        this.children.userSettingButton = new ButtonIconComponent({ img: userSettingsIcon, classNames: "header__user-settings" });
     }
-
-    private handleValidateForm = (): void => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            this.children.form.validateInputs();
-        }
-    };
-
-    private isChatFormValid = (): boolean => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            return this.children.form.isFormValid();
-        }
-
-        return false;
-    };
 
     private onSubmit(e: Event) {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
-            const formData = new FormData(e.target as HTMLFormElement);
-            const form: Record<string, FormDataEntryValue> = {};
-            for (const [key, value] of formData.entries()) {
-                form[key] = value;
-            }
+            if (this.children.form instanceof FormComponent) {
+                const { form } = this.children;
 
-            this.handleValidateForm();
+                form.validateInputs();
+                const values = form.getValues<{ message: string }>();
 
-            if (this.isChatFormValid()) {
-                // Нужно сбрасывать значение в инпуте, посмотреть как сделать ref.
-                console.log("Успех");
+                if (form.isFormValid() && values != null) {
+                    messagesController.sendMessage(this.props.selectedChat, values.message);
+                    form.clearForm();
+                }
             }
         }
     }
 
+    protected componentDidUpdate(_oldProps: any, _newProps: any): boolean {
+        if (isEqual(_oldProps, _newProps)) {
+            if (_newProps.selectedChat != null) {
+                if (isEqual(_oldProps.messages[this.props.selectedChat], _newProps.messages[this.props.selectedChat])) {
+                    this.children.messagesContainer = new MessagesContainerComponent({
+                        messages: this.props.messages[this.props.selectedChat],
+                        id: "messages",
+                    });
+                    setTimeout(() => {
+                        const messagesContainer = document.getElementById("messages");
+                        if (messagesContainer != null) {
+                            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                        }
+                    }, 0);
+                }
+            }
+
+            return true;
+        }
+        return false;
+    }
+
     protected render() {
-        return this.compile(chatTemplate, this.props);
+        const activeChat = (this.props.chats as ChatType[]).find((chat) => chat.id === this.props.selectedChat);
+        if (activeChat != null) {
+            this.children.avatar = new AvatarComponent({
+                id: "chatAvatar",
+                isActive: false,
+                inputContainerClasses: "header__image",
+                avatar: activeChat.avatar != null ? `https://ya-praktikum.tech/api/v2/resources${activeChat.avatar}` : null,
+            });
+        }
+
+        return this.compile(chatTemplate, {
+            ...this.props,
+            activeChat,
+        });
     }
 }
+
+export const ChatComponent = withChats(withMessages(withSelectedChat(Chat)));

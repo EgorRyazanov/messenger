@@ -4,6 +4,7 @@ import { Chat } from "../core/models/chat.ts";
 import { Message } from "../core/models/message.ts";
 import { store } from "../utils/store.ts";
 import WSTransport, { WSTransportEvents } from "../utils/websocket-transport.ts";
+import chatController from "./chat-controller.ts";
 
 class MessagesController {
     private sockets: Map<number, WSTransport> = new Map();
@@ -70,6 +71,8 @@ class MessagesController {
         messagesToAdd = [...currentMessages, ...messagesToAdd];
 
         store.set(`messages.${id}`, messagesToAdd);
+
+        chatController.fetchChats();
     }
 
     private onClose(id: number) {

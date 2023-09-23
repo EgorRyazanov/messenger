@@ -14,7 +14,7 @@ export class MessageMapper {
     public static fromDto(dto: MessageDto): Message {
         return {
             chatId: dto.chat_id,
-            time: dto.time,
+            time: new Date(dto.time),
             type: dto.type,
             userId: dto.user_id,
             content: dto.content,

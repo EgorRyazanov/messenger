@@ -8,7 +8,7 @@ export interface LastMessage {
 
 export interface Message {
     chatId: number;
-    time: string;
+    time: Date;
     type: string;
     userId: number;
     content: string;

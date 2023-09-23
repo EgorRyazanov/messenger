@@ -32,6 +32,10 @@ export class Store extends EventBus {
     public getState() {
         return this.state;
     }
+
+    public selectUserId() {
+        return this.state.user?.id ?? null;
+    }
 }
 
 export const store = new Store();
