@@ -8,7 +8,7 @@
 }
 
 .avatar-active:hover::after {
-    content: "Выбрать";
+    content: "";
     top: 0;
     color: vars.$gray-color-light;
     position: absolute;

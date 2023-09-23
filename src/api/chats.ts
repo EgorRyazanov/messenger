@@ -34,6 +34,10 @@ export class ChatsAPI extends BaseAPI {
         return response.token;
     }
 
+    public updateAvatar(data: FormData) {
+        return this.http.put<ChatDto>("/avatar", { data });
+    }
+
     update = undefined;
 }
 

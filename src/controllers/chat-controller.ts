@@ -2,6 +2,7 @@ import API, { ChatsAPI } from "../api/chats.ts";
 import { isServerError } from "../core/DTO/server-error.dto.ts";
 import { ChatMapper } from "../core/mappers/chat.mapper.ts";
 import { ErrorMapper } from "../core/mappers/error.mapper.ts";
+import { Chat } from "../core/models/chat.ts";
 import { store } from "../utils/store.ts";
 import messagesController from "./messages-controller.ts";
 
@@ -35,6 +36,36 @@ class ChatsController {
         });
 
         store.set("chats", chats);
+    }
+
+    public async updateAvatar(data: File, chatId: Chat["id"]): Promise<Chat["avatar"] | null> {
+        try {
+            const formData = new FormData();
+            formData.append("avatar", data);
+            formData.append("chatId", chatId.toString());
+            const chatDto = await this.api.updateAvatar(formData);
+
+            const { chats } = store.getState();
+
+            const chat = ChatMapper.fromDto(chatDto);
+
+            const updatedChats = chats.map((currentChat) => {
+                if (currentChat.id === chat.id) {
+                    return chat;
+                }
+                return currentChat;
+            });
+
+            store.set("chats", updatedChats);
+
+            return chat.avatar;
+        } catch (e: unknown) {
+            if (isServerError(e)) {
+                throw ErrorMapper.fromDto(e);
+            }
+        }
+
+        return null;
     }
 
     public addUserToChat(id: number, userId: number) {

@@ -12,10 +12,12 @@ import { AvatarComponent } from "../avatar/index.ts";
 import messagesController from "../../controllers/messages-controller.ts";
 import { MessagesContainerComponent } from "../messages-container/index.ts";
 import { isEqual } from "../../utils/helpers.ts";
+import { CustomError } from "../../core/models/error.ts";
+import chatController from "../../controllers/chat-controller.ts";
 import "./chat.scss";
 
 class Chat extends Block {
-    protected init() {
+    protected init(): void {
         const inputs = [
             new InputComponent({
                 name: "message",
@@ -43,7 +45,7 @@ class Chat extends Block {
         this.children.userSettingButton = new ButtonIconComponent({ img: userSettingsIcon, classNames: "header__user-settings" });
     }
 
-    private onSubmit(e: Event) {
+    private onSubmit(e: Event): void {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
             if (this.children.form instanceof FormComponent) {
@@ -82,13 +84,37 @@ class Chat extends Block {
         return false;
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         const activeChat = (this.props.chats as ChatType[]).find((chat) => chat.id === this.props.selectedChat);
         if (activeChat != null) {
             this.children.avatar = new AvatarComponent({
                 id: "chatAvatar",
-                isActive: false,
+                isActive: true,
                 inputContainerClasses: "header__image",
+                events: {
+                    click: async () => {
+                        const inputComponent = document.getElementById("chatAvatar") as HTMLInputElement;
+                        inputComponent?.click();
+                        inputComponent?.addEventListener("change", async () => {
+                            const files = inputComponent?.files;
+                            if (files != null) {
+                                try {
+                                    const newAvatar = await chatController.updateAvatar(files[0], activeChat.id);
+                                    const avatar = this.children.avatar as Block;
+
+                                    avatar.setProps({
+                                        ...avatar.props,
+                                        avatar: newAvatar ? `https://ya-praktikum.tech/api/v2/resources${newAvatar}` : null,
+                                    });
+                                } catch (e: unknown) {
+                                    if (e instanceof CustomError) {
+                                        console.error(e.reason);
+                                    }
+                                }
+                            }
+                        });
+                    },
+                },
                 avatar: activeChat.avatar != null ? `https://ya-praktikum.tech/api/v2/resources${activeChat.avatar}` : null,
             });
         }

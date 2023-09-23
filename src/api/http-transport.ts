@@ -64,6 +64,8 @@ export class HTTPTransport {
 
             if (method === ApiMethods.Get || data == null) {
                 xhr.send();
+            } else if (data instanceof FormData) {
+                xhr.send(data);
             } else if (data instanceof File) {
                 const formData = new FormData();
                 formData.append("avatar", data);
