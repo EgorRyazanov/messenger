@@ -24,7 +24,7 @@ class ChatsListItem extends Block<ChatsListItemProps> {
         });
     }
 
-    protected init() {
+    protected init(): void {
         this.children.avatar = new AvatarComponent({
             id: this.props.chat.id.toString(),
             isActive: false,
@@ -33,7 +33,7 @@ class ChatsListItem extends Block<ChatsListItemProps> {
         });
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(chatsListItemTemplate, {
             ...this.props,
             chatSelectedClassname: this.props.selectedChat === this.props.chat.id ? "chat__item_active" : "",

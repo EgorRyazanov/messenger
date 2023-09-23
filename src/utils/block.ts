@@ -30,7 +30,7 @@ export class Block<P extends Record<string, any> = any> {
         eventBus.emit(Block.EVENTS.INIT);
     }
 
-    public removeEvents() {
+    public removeEvents(): void {
         this._removeEvents();
         Object.keys(this.children).forEach((child) => {
             if (Array.isArray(this.children[child])) {
@@ -56,7 +56,7 @@ export class Block<P extends Record<string, any> = any> {
         return { props: props as P, children };
     }
 
-    private _addEvents() {
+    private _addEvents(): void {
         const { events } = this.props;
 
         if (events != null) {
@@ -66,7 +66,7 @@ export class Block<P extends Record<string, any> = any> {
         }
     }
 
-    private _removeEvents() {
+    private _removeEvents(): void {
         const { events } = this.props;
 
         if (events != null) {
@@ -76,28 +76,28 @@ export class Block<P extends Record<string, any> = any> {
         }
     }
 
-    private _registerEvents(eventBus: EventBus) {
+    private _registerEvents(eventBus: EventBus): void {
         eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
-    private _init() {
+    private _init(): void {
         this.init();
 
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    protected init() {}
+    protected init(): void {}
 
-    private _componentDidMount() {
+    private _componentDidMount(): void {
         this.componentDidMount();
     }
 
-    protected componentDidMount() {}
+    protected componentDidMount(): void {}
 
-    public dispatchComponentDidMount() {
+    public dispatchComponentDidMount(): void {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 
         Object.values(this.children).forEach((child) => {
@@ -109,17 +109,17 @@ export class Block<P extends Record<string, any> = any> {
         });
     }
 
-    private _componentDidUpdate(oldProps: P, newProps: P) {
+    private _componentDidUpdate(oldProps: P, newProps: P): void {
         if (this.componentDidUpdate(oldProps, newProps)) {
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
         }
     }
 
-    protected componentDidUpdate(_oldProps: P, _newProps: P) {
+    protected componentDidUpdate(_oldProps: P, _newProps: P): boolean {
         return true;
     }
 
-    public setProps = (nextProps: P) => {
+    public setProps = (nextProps: P): void => {
         if (nextProps == null) {
             return;
         }
@@ -127,16 +127,16 @@ export class Block<P extends Record<string, any> = any> {
         this._componentDidUpdate(this.props, nextProps);
     };
 
-    public getProps = (key: string) => {
+    public getProps = (key: string): any => {
         const value = this.props[key];
         return value;
     };
 
-    public get element() {
+    public get element(): HTMLElement | null {
         return this._element;
     }
 
-    private _render() {
+    private _render(): void {
         const fragment = this.render();
         const newElement = fragment?.firstElementChild;
 
@@ -149,7 +149,7 @@ export class Block<P extends Record<string, any> = any> {
         this._addEvents();
     }
 
-    public compile(template: string, context: any) {
+    public compile(template: string, context: any): DocumentFragment {
         const contextAndDummies = { ...context };
 
         Object.entries(this.children).forEach(([name, component]) => {
@@ -185,15 +185,15 @@ export class Block<P extends Record<string, any> = any> {
         return temp.content;
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return new DocumentFragment();
     }
 
-    public getContent() {
+    public getContent(): HTMLElement | null {
         return this.element;
     }
 
-    private _makePropsProxy(props: P) {
+    private _makePropsProxy(props: P): P {
         const self = this;
 
         return new Proxy(props, {

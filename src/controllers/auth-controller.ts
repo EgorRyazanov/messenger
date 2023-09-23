@@ -15,7 +15,7 @@ export class AuthController {
         this.api = API;
     }
 
-    public async login(data: LoginDto) {
+    public async login(data: LoginDto): Promise<void> {
         try {
             await this.api.login(data);
 
@@ -29,7 +29,7 @@ export class AuthController {
         }
     }
 
-    public async register(data: RegistrationDto) {
+    public async register(data: RegistrationDto): Promise<void> {
         try {
             await this.api.register(data);
 
@@ -43,13 +43,13 @@ export class AuthController {
         }
     }
 
-    public async fetchUser() {
+    public async fetchUser(): Promise<void> {
         const userDto = await this.api.read();
 
         store.set("user", UserMapper.fromDto(userDto));
     }
 
-    public async logout() {
+    public async logout(): Promise<void> {
         try {
             await this.api.logout();
 

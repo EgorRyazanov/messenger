@@ -3,7 +3,7 @@ import { LinkComponent } from "../../components/link/index.ts";
 import { Block } from "../../utils/block.ts";
 
 export class ErrorPage extends Block {
-    protected init() {
+    protected init(): void {
         this.children.linkBack = new LinkComponent({
             text: "Назад к чатам",
             url: "/",
@@ -13,7 +13,7 @@ export class ErrorPage extends Block {
         });
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(userErrorTemplate, this.props);
     }
 }

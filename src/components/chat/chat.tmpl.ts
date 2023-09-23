@@ -12,7 +12,6 @@ export const chatTemplate = `
             </div>
             {{{messagesContainer}}}
             <div class="chat__footer">
-                {{{messageSettingButton}}}
                 {{{form}}}
             </div>
         <div>

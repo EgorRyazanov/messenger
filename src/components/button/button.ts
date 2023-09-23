@@ -19,7 +19,7 @@ export class ButtonComponent extends Block<ButtonProps> {
         super(props);
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile('<button type={{type}} class="primary-button {{classNames}}">{{text}}</button>', this.props);
     }
 }

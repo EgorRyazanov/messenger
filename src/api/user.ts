@@ -7,15 +7,15 @@ export class UserAPI extends BaseAPI {
         super("/user");
     }
 
-    public update(data: UserDto) {
+    public update(data: UserDto): Promise<UserDto> {
         return this.http.put<UserDto>("/profile", { data });
     }
 
-    public updatePassword(data: PasswordUpdate) {
+    public updatePassword(data: PasswordUpdate): Promise<UserDto> {
         return this.http.put<UserDto>("/password", { data });
     }
 
-    public updateAvatar(data: File) {
+    public updateAvatar(data: File): Promise<UserDto> {
         return this.http.put<UserDto>("/profile/avatar", { data });
     }
 

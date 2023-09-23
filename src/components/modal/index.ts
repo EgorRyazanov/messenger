@@ -11,7 +11,7 @@ interface ModalComponentProps {
 }
 
 export class ModalComponent extends Block<ModalComponentProps> {
-    protected init() {
+    protected init(): void {
         this.children.CancelButton = new ButtonComponent({
             text: "Закрыть",
             classNames: "cancel-button",
@@ -21,12 +21,12 @@ export class ModalComponent extends Block<ModalComponentProps> {
         });
     }
 
-    public createPortal() {
+    public createPortal(): void {
         document.body.classList.add("modal__portal");
         render(this.props.container, this);
     }
 
-    public closeModal() {
+    public closeModal(): void {
         if (this.children.form instanceof FormComponent) {
             this.children.form.clearForm();
         }
@@ -38,7 +38,7 @@ export class ModalComponent extends Block<ModalComponentProps> {
         }
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(modalTemplate, this.props);
     }
 }

@@ -9,7 +9,7 @@ import chatController from "./chat-controller.ts";
 class MessagesController {
     private sockets: Map<number, WSTransport> = new Map();
 
-    public async connect(id: Chat["id"], token: string) {
+    public async connect(id: Chat["id"], token: string): Promise<void> {
         if (this.sockets.has(id)) {
             return;
         }
@@ -30,7 +30,7 @@ class MessagesController {
         this.fetchOldMessages(id);
     }
 
-    public sendMessage(id: Chat["id"], message: string) {
+    public sendMessage(id: Chat["id"], message: string): void {
         const socket = this.sockets.get(id);
 
         if (!socket) {
@@ -43,7 +43,7 @@ class MessagesController {
         });
     }
 
-    public fetchOldMessages(id: Chat["id"], content = 0) {
+    public fetchOldMessages(id: Chat["id"], content = 0): void {
         const socket = this.sockets.get(id);
 
         if (!socket) {
@@ -53,11 +53,11 @@ class MessagesController {
         socket.send({ type: "get old", content: `${content}` });
     }
 
-    public closeAll() {
+    public closeAll(): void {
         Array.from(this.sockets.values()).forEach((socket) => socket.close());
     }
 
-    private onMessage(id: Chat["id"], messagesDto: MessageDto | MessageDto[]) {
+    private onMessage(id: Chat["id"], messagesDto: MessageDto | MessageDto[]): void {
         let messagesToAdd: Message[] = [];
 
         if (Array.isArray(messagesDto)) {
@@ -75,11 +75,11 @@ class MessagesController {
         chatController.fetchChats();
     }
 
-    private onClose(id: number) {
+    private onClose(id: number): void {
         this.sockets.delete(id);
     }
 
-    private subscribe(transport: WSTransport, id: Chat["id"]) {
+    private subscribe(transport: WSTransport, id: Chat["id"]): void {
         transport.on(WSTransportEvents.Message, (message) => this.onMessage(id, message));
         transport.on(WSTransportEvents.Close, () => this.onClose(id));
     }

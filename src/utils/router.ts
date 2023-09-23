@@ -15,13 +15,13 @@ class Router {
         this._currentRoute = null;
     }
 
-    public use<P extends typeof Block>(pathname: string, block: P, props?: Block["props"]) {
+    public use<P extends typeof Block>(pathname: string, block: P, props?: Block["props"]): Router {
         const route = new Route(pathname, block, { ...props, rootQuery: this._rootQuery });
         this.routes.push(route);
         return this;
     }
 
-    public start() {
+    public start(): void {
         window.onpopstate = (event: PopStateEvent) => {
             this._onRoute((event.currentTarget as Window).location.pathname ?? "");
         };
@@ -29,7 +29,7 @@ class Router {
         this._onRoute(window.location.pathname);
     }
 
-    private _onRoute(pathname: string) {
+    private _onRoute(pathname: string): void {
         const route = this.getRoute(pathname);
 
         if (this._currentRoute != null) {
@@ -43,12 +43,12 @@ class Router {
         }
     }
 
-    public go(pathname: string) {
+    public go(pathname: string): void {
         this.history.pushState({}, "", pathname);
         this._onRoute(pathname);
     }
 
-    public back() {
+    public back(): void {
         if (this._currentRoute) {
             this.history.back();
         }

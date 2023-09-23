@@ -10,12 +10,12 @@ export class MainPage extends Block {
         chatController.fetchChats();
     }
 
-    protected init() {
+    protected init(): void {
         this.children.chatsLists = new ChatsListComponent({});
         this.children.activeChat = new ChatComponent({});
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(mainPageTemplate, this.props);
     }
 }

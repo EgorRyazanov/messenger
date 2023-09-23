@@ -19,7 +19,7 @@ export class UserController {
         this.api = API;
     }
 
-    public async update(data: UserDto) {
+    public async update(data: UserDto): Promise<void> {
         try {
             const userDto = await this.api.update(data);
 
@@ -33,7 +33,7 @@ export class UserController {
         }
     }
 
-    public async updatePassword(data: PasswordUpdate) {
+    public async updatePassword(data: PasswordUpdate): Promise<void> {
         try {
             await this.api.updatePassword(data);
 
@@ -45,7 +45,7 @@ export class UserController {
         }
     }
 
-    public async updateAvatar(data: File) {
+    public async updateAvatar(data: File): Promise<void> {
         try {
             const userDto = await this.api.updateAvatar(data);
 

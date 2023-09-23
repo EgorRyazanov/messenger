@@ -6,7 +6,7 @@ interface SearchComponentProps {
 }
 
 export class SearchComponent extends Block<SearchComponentProps> {
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(`<input id="search" name="search" class="search" placeholder="Поиск" >`, this.props);
     }
 }

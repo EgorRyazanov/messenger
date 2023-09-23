@@ -16,11 +16,11 @@ export class AuthAPI extends BaseAPI {
         return this.http.post<void>("/signin", { data });
     }
 
-    public async read() {
+    public async read(): Promise<UserDto> {
         return this.http.get<UserDto>("/user");
     }
 
-    public logout() {
+    public logout(): Promise<void> {
         return this.http.post<void>("/logout");
     }
 

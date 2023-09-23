@@ -23,17 +23,17 @@ export class Store extends EventBus {
         messages: {},
     } as State;
 
-    public set(keypath: string, data: unknown) {
+    public set(keypath: string, data: unknown): void {
         set(this.state, keypath, data);
 
         this.emit(StoreEvents.Updated, this.getState());
     }
 
-    public getState() {
+    public getState(): State {
         return this.state;
     }
 
-    public selectUserId() {
+    public selectUserId(): User["id"] | null {
         return this.state.user?.id ?? null;
     }
 }

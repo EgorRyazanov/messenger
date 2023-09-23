@@ -59,7 +59,7 @@ export class FormComponent extends Block<FormProps> {
         return null;
     }
 
-    public clearForm() {
+    public clearForm(): void {
         this.props.error = "";
         if (this.children.inputs && Array.isArray(this.children.inputs)) {
             this.children.inputs.forEach((input) => {
@@ -70,7 +70,7 @@ export class FormComponent extends Block<FormProps> {
         }
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(formTemplate, this.props);
     }
 }

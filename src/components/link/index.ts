@@ -14,7 +14,7 @@ export class LinkComponent extends Block<LinkProps> {
         super(props);
     }
 
-    render() {
+    protected render(): DocumentFragment {
         return this.compile('<a class="link {{linkClasses}}" href={{url}}>{{text}}</a>', this.props);
     }
 }

@@ -13,7 +13,7 @@ import { AvatarComponent } from "../../../components/avatar/index.ts";
 import "../profile.scss";
 
 export class ProfileEditComponent extends Block {
-    protected init() {
+    protected init(): void {
         const inputs = [
             new InputComponent({
                 name: "login",
@@ -104,7 +104,7 @@ export class ProfileEditComponent extends Block {
         };
     }
 
-    private async onSubmit(e: Event) {
+    private async onSubmit(e: Event): Promise<void> {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
             if (this.children.form instanceof FormComponent) {
@@ -127,7 +127,7 @@ export class ProfileEditComponent extends Block {
         }
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(profileTemplate, this.props);
     }
 }

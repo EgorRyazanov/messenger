@@ -1,6 +1,5 @@
 import { Block } from "../../utils/block.ts";
 import { chatTemplate } from "./chat.tmpl.ts";
-import messageSettings from "../../assets/icons/message-settings.svg";
 import userSettingsIcon from "../../assets/icons/user-settings.svg";
 import sendMessage from "../../assets/icons/send-message.svg";
 import { ButtonIconComponent } from "../button/index.ts";
@@ -41,7 +40,6 @@ class Chat extends Block {
             events: formEvents,
             button: new ButtonIconComponent({ img: sendMessage, type: "submit" }),
         });
-        this.children.messageSettingButton = new ButtonIconComponent({ img: messageSettings, classNames: "footer__message-setting" });
         this.children.userSettingButton = new ButtonIconComponent({ img: userSettingsIcon, classNames: "header__user-settings" });
     }
 

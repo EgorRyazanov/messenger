@@ -10,7 +10,7 @@ interface AvatarProps {
 }
 
 export class AvatarComponent extends Block<AvatarProps> {
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(avatarTemplate, this.props);
     }
 }

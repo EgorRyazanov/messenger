@@ -15,7 +15,7 @@ export class RegistrationPage extends Block {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    protected init() {
+    protected init(): void {
         const inputs = [
             new InputComponent({
                 name: "email",
@@ -60,7 +60,7 @@ export class RegistrationPage extends Block {
         });
     }
 
-    private async onSubmit(e: Event) {
+    private async onSubmit(e: Event): Promise<void> {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
             if (this.children.form instanceof FormComponent) {
@@ -83,7 +83,7 @@ export class RegistrationPage extends Block {
         }
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(registerPageTemplate, this.props);
     }
 }

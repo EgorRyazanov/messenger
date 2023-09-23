@@ -12,7 +12,7 @@ import AuthController from "../../../controllers/auth-controller.ts";
 import { AvatarComponent } from "../../../components/avatar/index.ts";
 
 class ProfileComponent extends Block {
-    protected init() {
+    protected init(): void {
         const inputs = [
             new InputComponent({
                 name: "login",
@@ -93,7 +93,7 @@ class ProfileComponent extends Block {
         };
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(profileTemplate, this.props);
     }
 }

@@ -16,7 +16,7 @@ import "./chats-list.scss";
 let interval: NodeJS.Timeout;
 
 class ChatsList extends Block {
-    protected init() {
+    protected init(): void {
         const inputs = [new InputComponent({ name: "title", labelValue: "Название", isAutofocus: true })];
         const form = new FormComponent({
             inputs,
@@ -57,7 +57,7 @@ class ChatsList extends Block {
         });
     }
 
-    private async onModalSubmit(e: Event) {
+    private async onModalSubmit(e: Event): Promise<void> {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
             if (this.children.Modal instanceof ModalComponent && this.children.Modal.children.form instanceof FormComponent) {
@@ -80,7 +80,7 @@ class ChatsList extends Block {
         }
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         this.children.chatItems = (this.props.chats as Chat[]).map((chat) => {
             return new ChatsListItemComponent({ chat });
         });

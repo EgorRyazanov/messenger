@@ -18,7 +18,7 @@ export class ButtonIconComponent extends Block<ButtonIconProps> {
         });
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(
             `<button type={{type}} {{#if url}} onclick="window.location.href = '{{url}}'" {{/if}} class="icon-button {{classNames}}">
                 <img src='{{img}}' alt="Кнопка">

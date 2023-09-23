@@ -10,7 +10,7 @@ interface MessagesContainerComponentProps {
 }
 
 export class MessagesContainerComponent extends Block<MessagesContainerComponentProps> {
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(messagesContainerTemplate, this.props);
     }
 }

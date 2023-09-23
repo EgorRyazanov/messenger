@@ -19,11 +19,11 @@ function isArrayOrObject(value: unknown): value is PlainObject {
     return isPlainObject(value) || Array.isArray(value);
 }
 
-function getKey(key: string, parentKey?: string) {
+function getKey(key: string, parentKey?: string): string {
     return parentKey ? `${parentKey}[${key}]` : key;
 }
 
-function getParams(data: PlainObject | [], parentKey?: string) {
+function getParams(data: PlainObject | [], parentKey?: string): [string, string][] {
     const result: [string, string][] = [];
 
     for (const [key, value] of Object.entries(data)) {
@@ -47,7 +47,7 @@ export function queryString(data: unknown): string {
         .join("&");
 }
 
-export function isEqual(lhs: PlainObject, rhs: PlainObject) {
+export function isEqual(lhs: PlainObject, rhs: PlainObject): boolean {
     if (Object.keys(lhs).length !== Object.keys(rhs).length) {
         return false;
     }

@@ -18,7 +18,7 @@ export default class WSTransport extends EventBus {
         super();
     }
 
-    public send(data: unknown) {
+    public send(data: unknown): void {
         if (!this.socket) {
             throw new Error("Socket is not connected");
         }
@@ -40,11 +40,11 @@ export default class WSTransport extends EventBus {
         });
     }
 
-    public close() {
+    public close(): void {
         this.socket?.close();
     }
 
-    private setupPing() {
+    private setupPing(): void {
         this.pingInterval = setInterval(() => {
             this.send({ type: "ping" });
         }, DEFAULT_PINT_TIME_MS);
@@ -56,7 +56,7 @@ export default class WSTransport extends EventBus {
         });
     }
 
-    private subscribe(socket: WebSocket) {
+    private subscribe(socket: WebSocket): void {
         socket.addEventListener("open", () => {
             this.emit(WSTransportEvents.Connected);
         });

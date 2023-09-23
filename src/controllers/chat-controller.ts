@@ -13,7 +13,7 @@ class ChatsController {
         this.api = API;
     }
 
-    public async create(title: string) {
+    public async create(title: string): Promise<void> {
         try {
             await this.api.create({ title });
 
@@ -25,7 +25,7 @@ class ChatsController {
         }
     }
 
-    public async fetchChats(title?: string) {
+    public async fetchChats(title?: string): Promise<void> {
         const data = title != null ? { title } : undefined;
         const chatsDto = await this.api.read(data);
         const chats = chatsDto.map((chatDto) => ChatMapper.fromDto(chatDto));
@@ -68,17 +68,17 @@ class ChatsController {
         return null;
     }
 
-    public addUserToChat(id: number, userId: number) {
+    public addUserToChat(id: number, userId: number): void {
         this.api.addUsers(id, [userId]);
     }
 
-    public async delete(id: number) {
+    public async delete(id: number): Promise<void> {
         await this.api.delete(id);
 
         this.fetchChats();
     }
 
-    public getToken(id: number) {
+    public getToken(id: Chat["id"]): Promise<string> {
         return this.api.getToken(id);
     }
 

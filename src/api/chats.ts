@@ -8,8 +8,8 @@ export class ChatsAPI extends BaseAPI {
         super("/chats");
     }
 
-    public create(data: { title: string }) {
-        return this.http.post("/", { data });
+    public create(data: { title: string }): Promise<ChatDto> {
+        return this.http.post<ChatDto>("/", { data });
     }
 
     public delete(identifier: Chat["id"]): Promise<unknown> {
