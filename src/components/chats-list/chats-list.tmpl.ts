@@ -5,9 +5,10 @@ export const chatsListTemplate = `
     <div class="chats-list__container">
         <a href="/profile" class="chats-list__profile-link">
             Профиль
-            <img class="profile-link__image" src=${arrow} alt="Картинка">
+            <img class="profile-link__image" src=${arrow} alt="Профиль">
         </a>
         {{{SearchComponent}}}
+        {{{AddChatButton}}}
         <ul class="chats-list__persons-container">
             {{#each chatItems}}
                 {{{this}}}

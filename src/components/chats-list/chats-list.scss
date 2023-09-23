@@ -21,7 +21,7 @@
     }
 
     &__persons-container {
-        height: calc(100vh - 104px);
+        height: calc(100vh - 156px);
         overflow: hidden;
         overflow-y: auto;
     }
@@ -36,6 +36,14 @@
 
     &__persons-container::-webkit-scrollbar-track {
         background-color: transparent;
+    }
+
+    &__add-chat {
+        width: 100%;
+    }
+
+    &__form {
+        box-shadow: none;
     }
 }
 

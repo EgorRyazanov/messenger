@@ -59,6 +59,17 @@ export class FormComponent extends Block<FormProps> {
         return null;
     }
 
+    public clearForm() {
+        this.props.error = "";
+        if (this.children.inputs && Array.isArray(this.children.inputs)) {
+            this.children.inputs.forEach((input) => {
+                if (input instanceof InputComponent) {
+                    input.setProps({ ...input.props, value: "" });
+                }
+            });
+        }
+    }
+
     protected render() {
         return this.compile(formTemplate, this.props);
     }

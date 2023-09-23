@@ -1,5 +1,7 @@
 import API, { ChatsAPI } from "../api/chats.ts";
+import { isServerError } from "../core/DTO/server-error.dto.ts";
 import { ChatMapper } from "../core/mappers/chat.mapper.ts";
+import { ErrorMapper } from "../core/mappers/error.mapper.ts";
 import { store } from "../utils/store.ts";
 
 class ChatsController {
@@ -10,9 +12,15 @@ class ChatsController {
     }
 
     public async create(title: string) {
-        await this.api.create({ title });
+        try {
+            await this.api.create({ title });
 
-        this.fetchChats();
+            this.fetchChats();
+        } catch (e: unknown) {
+            if (isServerError(e)) {
+                throw ErrorMapper.fromDto(e);
+            }
+        }
     }
 
     public async fetchChats(title?: string) {

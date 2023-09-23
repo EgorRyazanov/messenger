@@ -1,7 +1,6 @@
 import { LoginPage } from "./pages/login-page/index.ts";
 import { RegistrationPage } from "./pages/registration-page/index.ts";
 import { MainPage } from "./pages/main-page/index.ts";
-import { DATA_CHATS } from "./utils/constants.ts";
 import { ProfilePage } from "./pages/profile-pages/profile-page/index.ts";
 import { ErrorPage } from "./pages/error-page/index.ts";
 import { router } from "./utils/router.ts";

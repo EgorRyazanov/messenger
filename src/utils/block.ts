@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { EventBus } from "./event-bus";
 
 export class Block<P extends Record<string, any> = any> {
-    static EVENTS = {
+    private static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
         FLOW_CDU: "flow:component-did-update",

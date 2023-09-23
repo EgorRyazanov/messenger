@@ -7,20 +7,12 @@ class Router {
 
     private routes: Route[];
 
-    // private __instance: Router;
-
     private _currentRoute: Route | null;
 
     public constructor(private readonly _rootQuery: string) {
-        // if (Router.__instance) {
-        //     return Router.__instance;
-        // }
-
         this.routes = [];
         this.history = window.history;
         this._currentRoute = null;
-
-        // Router.__instance = this;
     }
 
     public use<P extends typeof Block>(pathname: string, block: P, props?: Block["props"]) {
