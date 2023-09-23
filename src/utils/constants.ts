@@ -10,6 +10,8 @@ export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
     second: "numeric",
 };
 
+export const SEARCH_INTERVAL_TIME_MS = 1000;
+
 export const DATA_CHATS = [
     {
         name: "Дарья",

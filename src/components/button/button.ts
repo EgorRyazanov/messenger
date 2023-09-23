@@ -3,7 +3,7 @@ import { Block } from "../../utils/block.ts";
 
 interface ButtonProps {
     text: string;
-    events?: Record<string, (args: any) => void>;
+    events?: Record<string, (args: unknown) => void>;
     type?: string;
     classNames?: string;
 }

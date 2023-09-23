@@ -6,5 +6,5 @@ export interface Chat {
     avatar: string;
     unreadCount: number;
     createdBy: number;
-    lastMessage: Message;
+    lastMessage: Message | null;
 }

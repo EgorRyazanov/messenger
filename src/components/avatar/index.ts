@@ -11,7 +11,6 @@ interface AvatarProps {
 
 export class AvatarComponent extends Block<AvatarProps> {
     protected render() {
-        console.log(123);
         return this.compile(avatarTemplate, this.props);
     }
 }

@@ -10,7 +10,7 @@ export class ChatMapper {
             avatar: dto.avatar,
             unreadCount: dto.unread_count,
             createdBy: dto.created_by,
-            lastMessage: MessageMapper.fromDto(dto.last_message),
+            lastMessage: dto?.last_message ? MessageMapper.fromDto(dto.last_message) : null,
         };
     }
 }

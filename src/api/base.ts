@@ -9,7 +9,7 @@ export abstract class BaseAPI {
 
     public abstract create?(data: unknown): Promise<unknown>;
 
-    public abstract read?(identifier?: string | number): Promise<unknown>;
+    public abstract read?(identifier?: unknown): Promise<unknown>;
 
     public abstract update?(data: unknown, identifier?: string | number): Promise<unknown>;
 

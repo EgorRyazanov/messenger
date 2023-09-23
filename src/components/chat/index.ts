@@ -9,13 +9,7 @@ import { FormComponent } from "../form/index.ts";
 import { Chat } from "../../core/models/chat.ts";
 import "./chat.scss";
 
-interface ChatProps {
-    activeChat: Chat;
-    messageSettingButton: ButtonIconComponent;
-    userSettingButton: ButtonIconComponent;
-}
-
-export class ChatComponent extends Block<ChatProps> {
+export class ChatComponent extends Block {
     public constructor({ activeChat }: { activeChat: Chat }) {
         const props = {
             activeChat,

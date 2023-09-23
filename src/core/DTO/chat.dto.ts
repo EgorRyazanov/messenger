@@ -6,5 +6,5 @@ export interface ChatDto {
     avatar: string;
     unread_count: number;
     created_by: number;
-    last_message: MessageDto;
+    last_message: MessageDto | null;
 }

@@ -9,7 +9,7 @@ export class HTTPTransport {
 
     public get<T>(url: string, options?: Config): Promise<T> {
         return this.request<T>(
-            options?.data != null ? `${url}${queryString(options.data)}` : url,
+            options?.data != null ? `${url}?${queryString(options.data)}` : url,
             { ...options, method: ApiMethods.Get },
             options?.timeout,
         );

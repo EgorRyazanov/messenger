@@ -27,3 +27,7 @@ export function withStore<SP extends Record<string, any>>(mapStateToProps: (stat
 }
 
 export const withUser = withStore((state) => ({ ...state.user }));
+
+export const withChats = withStore((state) => ({ chats: state.chats }));
+
+export const withSelectedChat = withStore((state) => ({ selectedChat: state.selectedChat }));

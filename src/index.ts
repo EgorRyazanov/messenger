@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         let isProtectedRoute = true;
 
         router
-            .use(Routes.Main, MainPage, { chats: DATA_CHATS, activeChat: null })
+            .use(Routes.Main, MainPage)
             .use(Routes.Login, LoginPage)
             .use(Routes.Register, RegistrationPage)
             .use(Routes.Error, ErrorPage)

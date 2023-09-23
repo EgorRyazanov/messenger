@@ -1,3 +1,4 @@
+import { Routes } from "../index.ts";
 import { Block } from "./block.ts";
 import { Route } from "./route.ts";
 
@@ -46,7 +47,7 @@ class Router {
             this._currentRoute = route;
             route.render();
         } else {
-            this.go("error");
+            this.go(Routes.Error);
         }
     }
 
