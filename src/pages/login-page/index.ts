@@ -40,34 +40,22 @@ export class LoginPage extends Block {
         });
     }
 
-    private handleValidateForm = (): void => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            this.children.form.validateInputs();
-        }
-    };
-
-    private isLoginFormValid = (): boolean => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            return this.children.form.isFormValid();
-        }
-
-        return false;
-    };
-
     private async onSubmit(e: Event) {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
-            this.handleValidateForm();
-            const form = this.children.form as FormComponent;
-            form.props.error = "";
-            const values = form.getValues<LoginDto>();
+            if (this.children.form instanceof FormComponent) {
+                const { form } = this.children;
+                form.validateInputs();
+                form.props.error = "";
+                const values = form.getValues<LoginDto>();
 
-            if (this.isLoginFormValid() && values != null) {
-                try {
-                    await AuthController.login(values);
-                } catch (event: unknown) {
-                    if (event instanceof CustomError) {
-                        form.props.error = event.reason;
+                if (form.isFormValid() && values != null) {
+                    try {
+                        await AuthController.login(values);
+                    } catch (event: unknown) {
+                        if (event instanceof CustomError) {
+                            form.props.error = event.reason;
+                        }
                     }
                 }
             }

@@ -10,8 +10,6 @@ import "../profile.scss";
 import { withUser } from "../../../utils/with-store.ts";
 import AuthController from "../../../controllers/auth-controller.ts";
 import { AvatarComponent } from "../../../components/avatar/index.ts";
-import userController from "../../../controllers/user-controller.ts";
-import { CustomError } from "../../../core/models/error.ts";
 
 class ProfileComponent extends Block {
     protected init() {

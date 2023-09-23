@@ -61,35 +61,23 @@ export class ProfileChangePasswordComponent extends Block {
         };
     }
 
-    private handleValidateForm = (): void => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            this.children.form.validateInputs();
-        }
-    };
-
-    private isProfileFormValid = (): boolean => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            return this.children.form.isFormValid();
-        }
-
-        return false;
-    };
-
     private async onSubmit(e: Event) {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
-            const form = this.children.form as FormComponent;
-            form.props.error = "";
-            const values = form.getValues<PasswordUpdate>();
+            if (this.children.form instanceof FormComponent) {
+                const { form } = this.children;
+                form.props.error = "";
+                const values = form.getValues<PasswordUpdate>();
 
-            this.handleValidateForm();
+                form.validateInputs();
 
-            if (this.isProfileFormValid() && values != null) {
-                try {
-                    await userController.updatePassword(values);
-                } catch (event: unknown) {
-                    if (event instanceof CustomError) {
-                        form.props.error = event.reason;
+                if (form.isFormValid() && values != null) {
+                    try {
+                        await userController.updatePassword(values);
+                    } catch (event: unknown) {
+                        if (event instanceof CustomError) {
+                            form.props.error = event.reason;
+                        }
                     }
                 }
             }

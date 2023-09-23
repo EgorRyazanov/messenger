@@ -1,5 +1,6 @@
 import { Chat } from "../../core/models/chat.ts";
 import { Block } from "../../utils/block.ts";
+import { store } from "../../utils/store.ts";
 import { withSelectedChat } from "../../utils/with-store.ts";
 import { AvatarComponent } from "../avatar/index.ts";
 import { chatsListItemTemplate } from "./chat-list-item.tmpl.ts";
@@ -7,9 +8,22 @@ import { chatsListItemTemplate } from "./chat-list-item.tmpl.ts";
 interface ChatsListItemProps {
     chat: Chat;
     selectedChat: Chat["id"];
+    events?: Record<string, (args: unknown) => void>;
 }
 
 class ChatsListItem extends Block<ChatsListItemProps> {
+    public constructor(props: ChatsListItemProps) {
+        super({
+            ...props,
+            events: {
+                ...props?.events,
+                click: () => {
+                    store.set("selectedChat", this.props.chat.id);
+                },
+            },
+        });
+    }
+
     protected init() {
         this.children.avatar = new AvatarComponent({
             id: this.props.chat.id.toString(),
