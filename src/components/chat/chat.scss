@@ -45,19 +45,20 @@
                 align-items: center;
             }
 
+            &__actions {
+                display: flex;
+                gap: 4px;
+            }
+
             &__name {
                 font-size: 13px;
                 line-height: 13px;
             }
 
-            &__user-settings {
+            &__icon-button {
                 background-color: white;
-                width: 25px;
-                height: 25px;
-
-                &:hover {
-                    background-color: vars.$primary-color-pale;
-                }
+                width: 20px;
+                height: 20px;
             }
         }
     }

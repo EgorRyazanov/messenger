@@ -6,10 +6,10 @@ import { Block } from "../../../utils/block.ts";
 import { validateEmail, validateLogin, validateNames, validatePhone } from "../../../utils/validate.ts";
 import { FormComponent } from "../../../components/form/index.ts";
 import backIcon from "../../../assets/icons/back.svg";
-import "../profile.scss";
 import { withUser } from "../../../utils/with-store.ts";
 import AuthController from "../../../controllers/auth-controller.ts";
 import { AvatarComponent } from "../../../components/avatar/index.ts";
+import "../profile.scss";
 
 class ProfileComponent extends Block {
     protected init(): void {

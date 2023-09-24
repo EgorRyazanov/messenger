@@ -14,6 +14,7 @@ Handlebars.registerHelper("messageDate", (message, opts) => {
 
 Handlebars.registerHelper("ifMessageAuthorContainer", (messageUserId, opts) => {
     const userId = store.selectUserId();
+
     if (userId === messageUserId) {
         return opts.fn("class='messages-container__message messages-container__message--you'");
     }
@@ -23,6 +24,7 @@ Handlebars.registerHelper("ifMessageAuthorContainer", (messageUserId, opts) => {
 export const messagesContainerTemplate = `
   <div id="{{id}}" class="messages-container">
       {{#each messages}}
+        {{#if this.userId}}
           <div {{#ifMessageAuthorContainer this.userId}} {{{this}}} {{else}} {{{this}}} {{/ifMessageAuthorContainer}}>
               <p>{{this.content}}</p>
               {{#messageDate this}}
@@ -31,5 +33,6 @@ export const messagesContainerTemplate = `
                 <p class="message-date">{{this}}</p>
               {{/messageDate}}
           </div>
+        {{/if}}
       {{/each}}
   </div>`;

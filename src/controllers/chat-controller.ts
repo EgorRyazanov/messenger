@@ -3,6 +3,7 @@ import { isServerError } from "../core/DTO/server-error.dto.ts";
 import { ChatMapper } from "../core/mappers/chat.mapper.ts";
 import { ErrorMapper } from "../core/mappers/error.mapper.ts";
 import { Chat } from "../core/models/chat.ts";
+import { User } from "../core/models/user.ts";
 import { store } from "../utils/store.ts";
 import messagesController from "./messages-controller.ts";
 
@@ -68,11 +69,15 @@ class ChatsController {
         return null;
     }
 
-    public addUserToChat(id: number, userId: number): void {
+    public async addUserToChat(id: Chat["id"], userId: User["id"]): Promise<void> {
         this.api.addUsers(id, [userId]);
     }
 
-    public async delete(id: number): Promise<void> {
+    public async deleteUserToChat(id: Chat["id"], userId: User["id"]): Promise<void> {
+        this.api.deleteUsers(id, [userId]);
+    }
+
+    public async delete(id: Chat["id"]): Promise<void> {
         await this.api.delete(id);
 
         this.fetchChats();
@@ -82,7 +87,7 @@ class ChatsController {
         return this.api.getToken(id);
     }
 
-    public selectChat(id: number) {
+    public selectChat(id: Chat["id"]) {
         store.set("selectedChat", id);
     }
 }

@@ -19,6 +19,10 @@ export class UserAPI extends BaseAPI {
         return this.http.put<UserDto>("/profile/avatar", { data });
     }
 
+    public searchUser(data: { login: string }): Promise<UserDto[]> {
+        return this.http.post<UserDto[]>("/search", { data });
+    }
+
     read = undefined;
 
     create = undefined;

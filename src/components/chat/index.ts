@@ -1,8 +1,10 @@
 import { Block } from "../../utils/block.ts";
 import { chatTemplate } from "./chat.tmpl.ts";
-import userSettingsIcon from "../../assets/icons/user-settings.svg";
+import deleteChatIcon from "../../assets/icons/delete.svg";
+import deletePersonIcon from "../../assets/icons/delete-person.svg";
+import addPersonIcon from "../../assets/icons/add-person.svg";
 import sendMessage from "../../assets/icons/send-message.svg";
-import { ButtonIconComponent } from "../button/index.ts";
+import { ButtonComponent, ButtonIconComponent } from "../button/index.ts";
 import { InputComponent } from "../input/index.ts";
 import { FormComponent } from "../form/index.ts";
 import { withChats, withMessages, withSelectedChat } from "../../utils/with-store.ts";
@@ -13,7 +15,11 @@ import { MessagesContainerComponent } from "../messages-container/index.ts";
 import { isEqual } from "../../utils/helpers.ts";
 import { CustomError } from "../../core/models/error.ts";
 import chatController from "../../controllers/chat-controller.ts";
+import { ModalComponent } from "../modal/index.ts";
+import { router } from "../../utils/router.ts";
+import { Routes } from "../../index.ts";
 import "./chat.scss";
+import userController from "../../controllers/user-controller.ts";
 
 class Chat extends Block {
     protected init(): void {
@@ -25,7 +31,7 @@ class Chat extends Block {
                 inputClasses: "footer__message",
                 inputContainerClasses: "chat__input-container",
                 validate: (message) => {
-                    if (!message) {
+                    if (!message || message.trim().length === 0) {
                         return "";
                     }
 
@@ -33,17 +39,120 @@ class Chat extends Block {
                 },
             }),
         ];
-        const formEvents = { submit: (e: Event) => this.onSubmit(e) };
+        const formEvents = { submit: (e: Event) => this.onMessageSubmit(e) };
         this.children.form = new FormComponent({
             inputs,
             classNames: "chat__form",
             events: formEvents,
             button: new ButtonIconComponent({ img: sendMessage, type: "submit" }),
         });
-        this.children.userSettingButton = new ButtonIconComponent({ img: userSettingsIcon, classNames: "header__user-settings" });
+
+        this.children.ChatDeleteModal = new ModalComponent({
+            container: "#app",
+            form: new FormComponent({
+                inputs: [
+                    new InputComponent({
+                        name: "title",
+                        labelValue: "Введите название",
+                        isAutofocus: true,
+                        validate: (value: string) => {
+                            const activeChat = (this.props.chats as ChatType[]).find((chat) => chat.id === this.props.selectedChat);
+                            if (activeChat != null && value !== activeChat.title) {
+                                return "Название введено неверно";
+                            }
+
+                            return null;
+                        },
+                    }),
+                ],
+                events: {
+                    submit: this.onChatDeleteModalSubmit.bind(this),
+                },
+                title: "Удаление чата",
+                button: new ButtonComponent({ text: "Удалить", type: "submit" }),
+                classNames: "chats-list__form",
+            }),
+        });
+
+        this.children.ChatDeleteButton = new ButtonIconComponent({
+            img: deleteChatIcon,
+            classNames: "header__icon-button",
+            events: {
+                click: () => {
+                    const { ChatDeleteModal } = this.children;
+                    if (ChatDeleteModal instanceof ModalComponent) {
+                        ChatDeleteModal.createPortal();
+                    }
+                },
+            },
+        });
+
+        this.children.DeletePersonButton = new ButtonIconComponent({
+            img: deletePersonIcon,
+            classNames: "header__icon-button",
+            events: {
+                click: () => {
+                    const { DeletePersonModal } = this.children;
+                    if (DeletePersonModal instanceof ModalComponent) {
+                        DeletePersonModal.createPortal();
+                    }
+                },
+            },
+        });
+
+        this.children.AddPersonButton = new ButtonIconComponent({
+            img: addPersonIcon,
+            classNames: "header__icon-button",
+            events: {
+                click: () => {
+                    const { AddPersonModal } = this.children;
+                    if (AddPersonModal instanceof ModalComponent) {
+                        AddPersonModal.createPortal();
+                    }
+                },
+            },
+        });
+
+        this.children.AddPersonModal = new ModalComponent({
+            container: "#app",
+            form: new FormComponent({
+                inputs: [
+                    new InputComponent({
+                        name: "login",
+                        labelValue: "Введите логин",
+                        isAutofocus: true,
+                    }),
+                ],
+                events: {
+                    submit: this.onAddPersonModalSubmit.bind(this),
+                },
+                title: "Добавить пользователя",
+                button: new ButtonComponent({ text: "Добавить", type: "submit" }),
+                classNames: "chats-list__form",
+            }),
+        });
+
+        this.children.DeletePersonModal = new ModalComponent({
+            container: "#app",
+            form: new FormComponent({
+                inputs: [
+                    new InputComponent({
+                        name: "login",
+                        labelValue: "Введите логин",
+                        isAutofocus: true,
+                    }),
+                ],
+                events: {
+                    submit: this.onDeletePersonModalSubmit.bind(this),
+                },
+                title: "Удалить пользователя",
+                button: new ButtonComponent({ text: "Удалить", type: "submit" }),
+                classNames: "chats-list__form",
+            }),
+        });
     }
 
-    private onSubmit(e: Event): void {
+    private onMessageSubmit(e: Event): void {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
             if (this.children.form instanceof FormComponent) {
@@ -52,9 +161,102 @@ class Chat extends Block {
                 form.validateInputs();
                 const values = form.getValues<{ message: string }>();
 
-                if (form.isFormValid() && values != null) {
+                if (form.isFormValid() && values != null && values.message.trim().length > 0) {
                     messagesController.sendMessage(this.props.selectedChat, values.message);
                     form.clearForm();
+                }
+            }
+        }
+    }
+
+    private async onChatDeleteModalSubmit(e: Event): Promise<void> {
+        e.preventDefault();
+        if (e.target != null && e.target instanceof HTMLFormElement) {
+            if (
+                this.children.ChatDeleteModal instanceof ModalComponent &&
+                this.children.ChatDeleteModal.children.form instanceof FormComponent
+            ) {
+                const { form } = this.children.ChatDeleteModal.children;
+
+                form.validateInputs();
+
+                if (form.isFormValid()) {
+                    try {
+                        const activeChat = (this.props.chats as ChatType[]).find((chat) => chat.id === this.props.selectedChat);
+                        if (activeChat != null) {
+                            await chatController.delete(activeChat.id);
+                            this.children.ChatDeleteModal.closeModal();
+                            router.go(Routes.Main);
+                        }
+                    } catch (event: unknown) {
+                        if (event instanceof CustomError) {
+                            form.props.error = event.reason;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private async onAddPersonModalSubmit(e: Event): Promise<void> {
+        e.preventDefault();
+        if (e.target != null && e.target instanceof HTMLFormElement) {
+            if (
+                this.children.AddPersonModal instanceof ModalComponent &&
+                this.children.AddPersonModal.children.form instanceof FormComponent
+            ) {
+                const { form } = this.children.AddPersonModal.children;
+
+                const search = form.getValues<{ login: string }>();
+
+                try {
+                    const activeChat = (this.props.chats as ChatType[]).find((chat) => chat.id === this.props.selectedChat);
+
+                    if (search != null && activeChat != null) {
+                        const users = await userController.searchUser(search);
+                        if (users != null && users.length === 1) {
+                            await chatController.addUserToChat(activeChat.id, users[0].id);
+                            this.children.AddPersonModal.closeModal();
+                        } else {
+                            form.props.error = "Пользователь не найден";
+                        }
+                    }
+                } catch (event: unknown) {
+                    if (event instanceof CustomError) {
+                        form.props.error = event.reason;
+                    }
+                }
+            }
+        }
+    }
+
+    private async onDeletePersonModalSubmit(e: Event): Promise<void> {
+        e.preventDefault();
+        if (e.target != null && e.target instanceof HTMLFormElement) {
+            if (
+                this.children.DeletePersonModal instanceof ModalComponent &&
+                this.children.DeletePersonModal.children.form instanceof FormComponent
+            ) {
+                const { form } = this.children.DeletePersonModal.children;
+
+                const search = form.getValues<{ login: string }>();
+
+                try {
+                    const activeChat = (this.props.chats as ChatType[]).find((chat) => chat.id === this.props.selectedChat);
+
+                    if (search != null && activeChat != null) {
+                        const users = await userController.searchUser(search);
+                        if (users != null && users.length === 1) {
+                            await chatController.deleteUserToChat(activeChat.id, users[0].id);
+                            this.children.DeletePersonModal.closeModal();
+                        } else {
+                            form.props.error = "Пользователь не найден";
+                        }
+                    }
+                } catch (event: unknown) {
+                    if (event instanceof CustomError) {
+                        form.props.error = event.reason;
+                    }
                 }
             }
         }

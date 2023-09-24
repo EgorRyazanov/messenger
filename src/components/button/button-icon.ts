@@ -6,15 +6,17 @@ interface ButtonIconProps {
     url?: string;
     classNames?: string;
     type?: string;
+    events?: Record<string, (args: unknown) => void>;
 }
 
 export class ButtonIconComponent extends Block<ButtonIconProps> {
-    public constructor({ img, url = "", classNames = "", type = "button" }: ButtonIconProps) {
+    public constructor({ img, url = "", classNames = "", type = "button", events }: ButtonIconProps) {
         super({
             img,
             url,
             classNames,
             type,
+            events,
         });
     }
 

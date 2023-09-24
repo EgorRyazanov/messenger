@@ -8,7 +8,11 @@ export const chatTemplate = `
                     {{{avatar}}}
                     <p class="header__name">{{activeChat.title}}</p>
                 </div>
-                {{{userSettingButton}}}
+                <div class="header__actions">
+                    {{{AddPersonButton}}}
+                    {{{DeletePersonButton}}}
+                    {{{ChatDeleteButton}}}
+                </div>
             </div>
             {{{messagesContainer}}}
             <div class="chat__footer">
