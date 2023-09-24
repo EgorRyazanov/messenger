@@ -17,4 +17,9 @@
         text-align: center;
         margin-bottom: 40px;
     }
+
+    &__error {
+        color: vars.$error-color;
+        font-size: 14px;
+    }
 }

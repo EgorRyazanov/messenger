@@ -1,6 +1,11 @@
 @use "fonts";
 @use "variables" as vars;
 
+html,
+body {
+    scrollbar-gutter: stable;
+}
+
 body {
     margin: 0;
     font-family: Inter, sans-serif;

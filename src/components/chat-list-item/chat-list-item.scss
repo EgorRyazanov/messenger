@@ -1,0 +1,71 @@
+@use "../../styles/_variables.scss" as vars;
+
+.chat {
+    &__item {
+        padding: 12px 0;
+        border-top: vars.$gray-color solid 1px;
+        cursor: pointer;
+        display: flex;
+        height: 67px;
+        position: relative;
+
+        &:last-child {
+            border-bottom: vars.$gray-color solid 1px;
+        }
+    }
+
+    &__item_active {
+        background-color: vars.$primary-color-selected;
+    }
+
+    &__avatar {
+        width: 47px;
+        height: 47px;
+        background-color: vars.$gray-color-medium;
+        margin-right: 10px;
+    }
+
+    &__title {
+        margin-bottom: 4px;
+        font-size: 13px;
+        line-height: 13px;
+    }
+
+    &__text-container {
+        width: 193px;
+        margin-right: 16px;
+    }
+
+    &__text {
+        font-size: 12px;
+        line-height: 14px;
+        color: vars.$gray-color;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    &__additional {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        position: absolute;
+        padding: 12px 5px;
+        right: 0;
+        top: 0;
+
+        .additional {
+            &__date {
+                font-size: 9px;
+                line-height: 13px;
+                color: vars.$gray-color;
+                margin-bottom: 12px;
+            }
+        }
+    }
+
+    &__item:hover {
+        background-color: vars.$primary-color-pale;
+    }
+}

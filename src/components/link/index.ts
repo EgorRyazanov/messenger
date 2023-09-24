@@ -1,20 +1,20 @@
 import "./link.scss";
 import { Block } from "../../utils/block.ts";
 
-interface ILink {
+interface LinkProps {
     text: string;
     url?: string;
     linkClasses?: string;
     events?: Record<string, (args: any) => void>;
 }
 
-export class Link extends Block<ILink> {
-    constructor({ text, events = {}, url = "/", linkClasses = "" }: ILink) {
+export class LinkComponent extends Block<LinkProps> {
+    constructor({ text, events = {}, url = "/", linkClasses = "" }: LinkProps) {
         const props = { text, url, linkClasses, events };
         super(props);
     }
 
-    render() {
+    protected render(): DocumentFragment {
         return this.compile('<a class="link {{linkClasses}}" href={{url}}>{{text}}</a>', this.props);
     }
 }

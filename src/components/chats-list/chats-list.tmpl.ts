@@ -1,75 +1,17 @@
-import "./chats-list.scss";
-import Handlebars from "handlebars";
 import arrow from "../../assets/icons/arrow.svg";
-import { converChatsListsDate } from "../../utils/utils.ts";
-
-Handlebars.registerHelper("lastMessage", (array) => {
-    if (array && array.length > 0) {
-        return array[array.length - 1].message;
-    }
-    return "";
-});
-
-Handlebars.registerHelper("lastItemDate", (array) => {
-    if (array && array.length > 0) {
-        return converChatsListsDate(array[array.length - 1].date);
-    }
-    return "";
-});
-
-Handlebars.registerHelper("ifIdEquals", (id, opts) => {
-    const activeId = window.location.pathname.slice(1);
-    if (activeId === id) {
-        return opts.fn("background-color: #FCE8E5");
-    }
-    return opts.inverse({});
-});
-
-Handlebars.registerHelper("ifLastPerson", (array, opts) => {
-    if (array && array.length > 0) {
-        if (array[array.length - 1].author !== "Вы") {
-            return opts.fn(array[array.length - 1].message);
-        }
-        return opts.inverse(array[array.length - 1].message);
-    }
-    return "";
-});
+import "./chats-list.scss";
 
 export const chatsListTemplate = `
     <div class="chats-list__container">
         <a href="/profile" class="chats-list__profile-link">
             Профиль
-            <img class="profile-link__image" src=${arrow} alt="Картинка">
+            <img class="profile-link__image" src=${arrow} alt="Профиль">
         </a>
-        <input name="search" class="chats-list__search" placeholder="Поиск" >
+        {{{SearchComponent}}}
+        {{{AddChatButton}}}
         <ul class="chats-list__persons-container">
-            {{#each chats}}
-                <li {{#ifIdEquals this.id }} style='{{this}}' {{else}}  {{/ifIdEquals}} onclick="window.location.replace('/{{this.id}}')" class="persons__item"> 
-                    {{#if this.avatar}}
-                        <img class="item__avatar" src={{this.avatar}} alt="Аватар - {{this.name}}">
-                    {{else}}
-                        <div class="item__avatar"></div>
-                    {{/if}}
-                    <div class="item__text-container">
-                        <h5 class="item__title">{{this.name}}</h5>
-                        <p class="item__text">{{lastMessage this}}</p>
-                        {{#ifLastPerson this.messanges}}
-                            <p class="item__text">{{this}}</p>
-                        {{else}}
-                            <p class="item__text"><b class="item__text--bold">Вы:</b> {{this}}</p>
-                        {{/ifLastPerson}}
-                    </div>
-                    <div class="item__additional">
-                        <div class="additional__date">
-                            {{lastItemDate this.messanges}}
-                        </div>
-                        {{#if this.new}}
-                        <div class="additional__new-messenges-container">
-                            <p class="additional__new-messenges">{{this.new}}</p>
-                        <div>
-                        {{/if}}
-                    </div>
-                </li>
+            {{#each chatItems}}
+                {{{this}}}
             {{/each}}
         </ul>
     </div>

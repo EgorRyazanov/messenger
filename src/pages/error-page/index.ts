@@ -1,27 +1,19 @@
 import { userErrorTemplate } from "./error-page.ts";
-import { Link } from "../../components/link/index.ts";
+import { LinkComponent } from "../../components/link/index.ts";
 import { Block } from "../../utils/block.ts";
 
-interface IError {
-    title: string;
-    linkBack: Link;
-}
-
-export class Error extends Block<IError> {
-    constructor(props: { title: string }) {
-        super({
-            linkBack: new Link({
-                text: "Назад к чатам",
-                url: "/",
-                events: {
-                    click: () => this.removeEvents(),
-                },
-            }),
-            ...props,
+export class ErrorPage extends Block {
+    protected init(): void {
+        this.children.linkBack = new LinkComponent({
+            text: "Назад к чатам",
+            url: "/",
+            events: {
+                click: () => this.removeEvents(),
+            },
         });
     }
 
-    render() {
+    protected render(): DocumentFragment {
         return this.compile(userErrorTemplate, this.props);
     }
 }

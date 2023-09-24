@@ -1,6 +1,6 @@
 {
     "extends": "stylelint-config-standard-scss",
     "rules": {
-        "selector-class-pattern": 0
+        "selector-class-pattern": null
     }
 }

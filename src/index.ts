@@ -1,48 +1,58 @@
+import { LoginPage } from "./pages/login-page/index.ts";
+import { RegistrationPage } from "./pages/registration-page/index.ts";
+import { MainPage } from "./pages/main-page/index.ts";
+import { ProfilePage } from "./pages/profile-pages/profile-page/index.ts";
+import { ErrorPage } from "./pages/error-page/index.ts";
+import { router } from "./utils/router.ts";
+import { ProfileChangePasswordPage } from "./pages/profile-pages/profile-change-password-page/index.ts";
+import { ProfileEditPage } from "./pages/profile-pages/profile-edit-page/index.ts";
+import AuthController from "./controllers/auth-controller.ts";
 import "./styles/index.scss";
-import { Login } from "./pages/login-page/index.ts";
-import { Register } from "./pages/register-page/index.ts";
-import { Main } from "./pages/main-page/index.ts";
-import { data_chats, data_profile } from "./utils/constants.ts";
-import { Profile } from "./pages/profile-page/index.ts";
-import { Error } from "./pages/error-page/index.ts";
 
-const getPage = () => {
-    switch (window.location.pathname) {
-        case "/login": {
-            return new Login();
-        }
-        case "/register": {
-            return new Register();
-        }
-        case "/profile/edit": {
-            return new Profile({ profile: data_profile, url: "/profile" });
-        }
-        case "/profile/change-password": {
-            return new Profile({ profile: data_profile, url: "/profile" });
-        }
-        case "/profile": {
-            return new Profile({ profile: data_profile, url: "/" });
-        }
-        case "/": {
-            return new Main({ chats: data_chats, activeChat: null });
-        }
-        default: {
-            const pathname = window.location.pathname.slice(1);
-            const activeChat = data_chats.find((person) => person.id === pathname);
-            if (activeChat) {
-                return new Main({ activeChat, chats: data_chats });
-            }
-            return new Error({ title: "404" });
-        }
-    }
-};
+export enum Routes {
+    Main = "/",
+    Register = "/register",
+    Login = "/login",
+    Profile = "/profile",
+    ProfileEdit = "/profile/edit",
+    ProfileChangePassword = "/profile/change-password",
+    Error = "/error",
+}
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const root = document.getElementById("app");
     if (root) {
-        const page = getPage();
-        root.innerHTML = "";
-        root.append(page.getContent() as Node);
-        page.dispatchComponentDidMount();
+        let isProtectedRoute = true;
+
+        router
+            .use(Routes.Main, MainPage)
+            .use(Routes.Login, LoginPage)
+            .use(Routes.Register, RegistrationPage)
+            .use(Routes.Error, ErrorPage)
+            .use(Routes.ProfileChangePassword, ProfileChangePasswordPage)
+            .use(Routes.ProfileEdit, ProfileEditPage)
+            .use(Routes.Profile, ProfilePage);
+
+        switch (window.location.pathname) {
+            case Routes.Login:
+            case Routes.Register:
+                isProtectedRoute = false;
+                break;
+            default:
+                break;
+        }
+
+        try {
+            await AuthController.fetchUser();
+            router.start();
+            if (!isProtectedRoute) {
+                router.go(Routes.Profile);
+            }
+        } catch (e: unknown) {
+            router.start();
+            if (isProtectedRoute) {
+                router.go(Routes.Login);
+            }
+        }
     }
 });

@@ -1,24 +1,26 @@
 import "./button.scss";
 import { Block } from "../../utils/block.ts";
 
-interface IBUttonIcon {
+interface ButtonIconProps {
     img: string;
     url?: string;
     classNames?: string;
     type?: string;
+    events?: Record<string, (args: unknown) => void>;
 }
 
-export class ButtonIcon extends Block<IBUttonIcon> {
-    constructor({ img, url = "", classNames = "", type = "button" }: IBUttonIcon) {
+export class ButtonIconComponent extends Block<ButtonIconProps> {
+    public constructor({ img, url = "", classNames = "", type = "button", events }: ButtonIconProps) {
         super({
             img,
             url,
             classNames,
             type,
+            events,
         });
     }
 
-    render() {
+    protected render(): DocumentFragment {
         return this.compile(
             `<button type={{type}} {{#if url}} onclick="window.location.href = '{{url}}'" {{/if}} class="icon-button {{classNames}}">
                 <img src='{{img}}' alt="Кнопка">

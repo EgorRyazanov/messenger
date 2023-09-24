@@ -1,15 +1,15 @@
 import "./button.scss";
 import { Block } from "../../utils/block.ts";
 
-interface IButton {
+interface ButtonProps {
     text: string;
-    events?: Record<string, (args: any) => void>;
+    events?: Record<string, (args: unknown) => void>;
     type?: string;
     classNames?: string;
 }
 
-export class Button extends Block<IButton> {
-    constructor({ text, events = {}, type = "button", classNames = "" }: IButton) {
+export class ButtonComponent extends Block<ButtonProps> {
+    public constructor({ text, events = {}, type = "button", classNames = "" }: ButtonProps) {
         const props = {
             text,
             type,
@@ -19,7 +19,7 @@ export class Button extends Block<IButton> {
         super(props);
     }
 
-    render() {
+    protected render(): DocumentFragment {
         return this.compile('<button type={{type}} class="primary-button {{classNames}}">{{text}}</button>', this.props);
     }
 }
