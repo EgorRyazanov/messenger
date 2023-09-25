@@ -9,6 +9,8 @@ import backIcon from "../../../assets/icons/back.svg";
 import { withUser } from "../../../utils/with-store.ts";
 import AuthController from "../../../controllers/auth-controller.ts";
 import { AvatarComponent } from "../../../components/avatar/index.ts";
+import { Routes } from "../../../index.ts";
+import { BASE_IMAGE_URL } from "../../../utils/constants.ts";
 import "../profile.scss";
 
 class ProfileComponent extends Block {
@@ -74,12 +76,12 @@ class ProfileComponent extends Block {
             avatar: new AvatarComponent({
                 id: "file",
                 isActive: false,
-                avatar: this.props.avatar ? `https://ya-praktikum.tech/api/v2/resources${this.props.avatar}` : null,
+                avatar: this.props.avatar ? `${BASE_IMAGE_URL}${this.props.avatar}` : null,
                 inputContainerClasses: "profile__avatar",
             }),
-            backButton: new ButtonIconComponent({ url: "/", img: backIcon, type: "submit" }),
-            linkEdit: new LinkComponent({ text: "Изменить данные?", url: "/profile/edit" }),
-            linkPassword: new LinkComponent({ text: "Изменить пароль?", url: "/profile/change-password" }),
+            backButton: new ButtonIconComponent({ url: Routes.Main, img: backIcon, type: "submit" }),
+            linkEdit: new LinkComponent({ text: "Изменить данные?", url: Routes.ProfileEdit }),
+            linkPassword: new LinkComponent({ text: "Изменить пароль?", url: Routes.ProfileChangePassword }),
             linkExit: new LinkComponent({
                 events: {
                     click: async (event: Event) => {

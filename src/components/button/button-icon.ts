@@ -1,16 +1,17 @@
 import "./button.scss";
 import { Block } from "../../utils/block.ts";
+import { Routes } from "../../index.ts";
 
 interface ButtonIconProps {
     img: string;
-    url?: string;
+    url?: Routes;
     classNames?: string;
     type?: string;
     events?: Record<string, (args: unknown) => void>;
 }
 
 export class ButtonIconComponent extends Block<ButtonIconProps> {
-    public constructor({ img, url = "", classNames = "", type = "button", events }: ButtonIconProps) {
+    public constructor({ img, url, classNames, type = "button", events }: ButtonIconProps) {
         super({
             img,
             url,

@@ -8,6 +8,7 @@ import { validateEmail, validateLogin, validateNames, validatePassword, validate
 import { RegistrationDto } from "../../core/DTO/auth/registration.dto.ts";
 import { CustomError } from "../../core/models/error.ts";
 import AuthController from "../../controllers/auth-controller.ts";
+import { Routes } from "../../index.ts";
 
 export class RegistrationPage extends Block {
     public constructor(props = {}) {
@@ -54,7 +55,7 @@ export class RegistrationPage extends Block {
         this.children.form = new FormComponent({
             inputs,
             events: formEvents,
-            link: new LinkComponent({ text: "Войти", url: "/login" }),
+            link: new LinkComponent({ text: "Войти", url: Routes.Main }),
             title: "Регистрация",
             button: new ButtonComponent({ text: "Зарегистрироваться", type: "submit" }),
         });

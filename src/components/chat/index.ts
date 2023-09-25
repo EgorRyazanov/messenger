@@ -18,8 +18,9 @@ import chatController from "../../controllers/chat-controller.ts";
 import { ModalComponent } from "../modal/index.ts";
 import { router } from "../../utils/router.ts";
 import { Routes } from "../../index.ts";
-import "./chat.scss";
 import userController from "../../controllers/user-controller.ts";
+import { BASE_IMAGE_URL } from "../../utils/constants.ts";
+import "./chat.scss";
 
 class Chat extends Block {
     protected init(): void {
@@ -304,7 +305,7 @@ class Chat extends Block {
 
                                     avatar.setProps({
                                         ...avatar.props,
-                                        avatar: newAvatar ? `https://ya-praktikum.tech/api/v2/resources${newAvatar}` : null,
+                                        avatar: newAvatar ? `${BASE_IMAGE_URL}${newAvatar}` : null,
                                     });
                                 } catch (e: unknown) {
                                     if (e instanceof CustomError) {
@@ -315,7 +316,7 @@ class Chat extends Block {
                         });
                     },
                 },
-                avatar: activeChat.avatar != null ? `https://ya-praktikum.tech/api/v2/resources${activeChat.avatar}` : null,
+                avatar: activeChat.avatar != null ? `${BASE_IMAGE_URL}${activeChat.avatar}` : null,
             });
         }
 

@@ -10,6 +10,8 @@ import UserController from "../../../controllers/user-controller.ts";
 import { UserDto } from "../../../core/DTO/user.dto.ts";
 import { CustomError } from "../../../core/models/error.ts";
 import { AvatarComponent } from "../../../components/avatar/index.ts";
+import { BASE_IMAGE_URL } from "../../../utils/constants.ts";
+import { Routes } from "../../../index.ts";
 import "../profile.scss";
 
 export class ProfileEditComponent extends Block {
@@ -70,11 +72,11 @@ export class ProfileEditComponent extends Block {
 
         this.children = {
             form,
-            backButton: new ButtonIconComponent({ url: "/profile", img: backIcon, type: "submit" }),
+            backButton: new ButtonIconComponent({ url: Routes.Profile, img: backIcon, type: "submit" }),
             avatar: new AvatarComponent({
                 id: "file",
                 isActive: true,
-                avatar: this.props.avatar ? `https://ya-praktikum.tech/api/v2/resources${this.props.avatar}` : null,
+                avatar: this.props.avatar ? `${BASE_IMAGE_URL}${this.props.avatar}` : null,
                 inputContainerClasses: "profile__avatar",
                 events: {
                     click: async () => {
@@ -89,7 +91,7 @@ export class ProfileEditComponent extends Block {
                                     const avatar = this.children.avatar as Block;
                                     avatar.setProps({
                                         ...avatar.props,
-                                        avatar: this.props.avatar ? `https://ya-praktikum.tech/api/v2/resources${this.props.avatar}` : null,
+                                        avatar: this.props.avatar ? `${BASE_IMAGE_URL}${this.props.avatar}` : null,
                                     });
                                 } catch (e: unknown) {
                                     if (e instanceof CustomError) {

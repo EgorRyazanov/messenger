@@ -1,35 +1,37 @@
 import { queryString } from "../utils/helpers.ts";
 import { ApiMethods, Config } from "./types.ts";
 
+type HTTPMethod = <R = unknown>(url: string, options?: Config) => Promise<R>;
+
 export class HTTPTransport {
     public static BASE_URL = "https://ya-praktikum.tech/api/v2";
 
     // eslint-disable-next-line no-useless-constructor
     public constructor(private readonly endpointSuffix: string) {}
 
-    public get<T>(url: string, options?: Config): Promise<T> {
-        return this.request<T>(
+    public get: HTTPMethod = (url, options) => {
+        return this.request(
             options?.data != null ? `${url}?${queryString(options.data)}` : url,
             { ...options, method: ApiMethods.Get },
             options?.timeout,
         );
-    }
+    };
 
-    public delete<T>(url: string, options?: Config): Promise<T> {
-        return this.request<T>(url, { ...options, method: ApiMethods.Delete }, options?.timeout);
-    }
+    public delete: HTTPMethod = (url, options?) => {
+        return this.request(url, { ...options, method: ApiMethods.Delete }, options?.timeout);
+    };
 
-    public put<T>(url: string, options?: Config): Promise<T> {
-        return this.request<T>(url, { ...options, method: ApiMethods.Put }, options?.timeout);
-    }
+    public put: HTTPMethod = (url, options?) => {
+        return this.request(url, { ...options, method: ApiMethods.Put }, options?.timeout);
+    };
 
-    public post<T>(url: string, options?: Config): Promise<T> {
-        return this.request<T>(url, { ...options, method: ApiMethods.Post }, options?.timeout);
-    }
+    public post: HTTPMethod = (url, options?) => {
+        return this.request(url, { ...options, method: ApiMethods.Post }, options?.timeout);
+    };
 
-    public patch<T>(url: string, options?: Config): Promise<T> {
-        return this.request<T>(url, { ...options, method: ApiMethods.Patch }, options?.timeout);
-    }
+    public patch: HTTPMethod = (url, options?) => {
+        return this.request(url, { ...options, method: ApiMethods.Patch }, options?.timeout);
+    };
 
     private request<T>(url: string, options: Config, timeout = 5000): Promise<T> {
         const { method, data } = options;

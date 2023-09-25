@@ -10,6 +10,8 @@ import userController, { PasswordUpdate } from "../../../controllers/user-contro
 import { CustomError } from "../../../core/models/error.ts";
 import { AvatarComponent } from "../../../components/avatar/index.ts";
 import "../profile.scss";
+import { Routes } from "../../../index.ts";
+import { BASE_IMAGE_URL } from "../../../utils/constants.ts";
 
 export class ProfileChangePasswordComponent extends Block {
     protected init(): void {
@@ -54,10 +56,10 @@ export class ProfileChangePasswordComponent extends Block {
             avatar: new AvatarComponent({
                 id: "file",
                 isActive: false,
-                avatar: this.props.avatar ? `https://ya-praktikum.tech/api/v2/resources${this.props.avatar}` : null,
+                avatar: this.props.avatar ? `${BASE_IMAGE_URL}${this.props.avatar}` : null,
                 inputContainerClasses: "profile__avatar",
             }),
-            backButton: new ButtonIconComponent({ url: "/profile", img: backIcon, type: "submit" }),
+            backButton: new ButtonIconComponent({ url: Routes.Profile, img: backIcon, type: "submit" }),
         };
     }
 

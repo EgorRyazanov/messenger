@@ -11,7 +11,7 @@ export class Block<P extends Record<string, any> = any> {
         FLOW_CDM: "flow:component-did-mount",
         FLOW_CDU: "flow:component-did-update",
         FLOW_RENDER: "flow:render",
-    };
+    } as const;
     public children: Record<string, Block<any> | Block<any>[]>;
     public id = nanoid(6);
     public props: P;
