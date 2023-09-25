@@ -1,0 +1,21 @@
+@use "../../styles/_variables.scss" as vars;
+
+.search {
+    background-color: vars.$gray-color-medium;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    position: relative;
+    font-size: 12px;
+    line-height: 12px;
+    color: vars.$gray-color;
+    margin-bottom: 14px;
+}
+
+.search::placeholder {
+    content: "Поиск";
+    text-align: center;
+    background-image: url("../../assets/icons/magnifier.svg");
+    background-repeat: no-repeat;
+    background-position: 38% 0;
+}

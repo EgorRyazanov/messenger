@@ -17,7 +17,7 @@ interface InputProps {
 }
 
 export class InputComponent extends Block<InputProps> {
-    constructor({
+    public constructor({
         name,
         labelValue,
         inputErrorClasses = "",
@@ -48,7 +48,7 @@ export class InputComponent extends Block<InputProps> {
         super(props);
     }
 
-    public isInputValid() {
+    public isInputValid(): boolean {
         if (this.props.validate != null) {
             return Boolean(!this.props.validate(this.value));
         }
@@ -56,7 +56,7 @@ export class InputComponent extends Block<InputProps> {
         return true;
     }
 
-    public validate() {
+    public validate(): void {
         if (this.props.validate != null) {
             const error = this.props.validate(this.value);
             if (error != null) {
@@ -78,8 +78,12 @@ export class InputComponent extends Block<InputProps> {
         }
     }
 
-    public get value() {
+    public get value(): string {
         return this.element?.querySelector("input")?.value ?? "";
+    }
+
+    public get name(): string {
+        return this.props.name;
     }
 
     protected render() {

@@ -5,6 +5,10 @@ import { LinkComponent } from "../../components/link/index.ts";
 import { Block } from "../../utils/block.ts";
 import { FormComponent } from "../../components/form/index.ts";
 import { validateLogin, validatePassword } from "../../utils/validate.ts";
+import { LoginDto } from "../../core/DTO/auth/login.dto.ts";
+import AuthController from "../../controllers/auth-controller.ts";
+import { CustomError } from "../../core/models/error.ts";
+import { Routes } from "../../index.ts";
 
 export class LoginPage extends Block {
     public constructor(props = {}) {
@@ -12,7 +16,7 @@ export class LoginPage extends Block {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    protected init() {
+    protected init(): void {
         const inputs = [
             new InputComponent({ name: "login", labelValue: "Логин", isAutofocus: true, validate: validateLogin }),
             new InputComponent({
@@ -31,44 +35,35 @@ export class LoginPage extends Block {
         this.children.form = new FormComponent({
             inputs,
             events: formEvents,
-            link: new LinkComponent({ text: "Нет аккаунта?", url: "/register" }),
+            link: new LinkComponent({ text: "Нет аккаунта?", url: Routes.Register }),
             title: "Вход",
             button: new ButtonComponent({ text: "Войти", type: "submit" }),
         });
     }
 
-    private handleValidateForm = (): void => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            this.children.form.validateInputs();
-        }
-    };
-
-    private isLoginFormValid = (): boolean => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            return this.children.form.isFormValid();
-        }
-
-        return false;
-    };
-
-    private onSubmit(e: Event) {
+    private async onSubmit(e: Event): Promise<void> {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
-            const formData = new FormData(e.target);
-            const form: Record<string, FormDataEntryValue> = {};
-            for (const [key, value] of formData.entries()) {
-                form[key] = value;
-            }
-            this.handleValidateForm();
+            if (this.children.form instanceof FormComponent) {
+                const { form } = this.children;
+                form.validateInputs();
+                form.props.error = "";
+                const values = form.getValues<LoginDto>();
 
-            if (this.isLoginFormValid()) {
-                window.location.href = "/";
-                this.removeEvents();
+                if (form.isFormValid() && values != null) {
+                    try {
+                        await AuthController.login(values);
+                    } catch (event: unknown) {
+                        if (event instanceof CustomError) {
+                            form.props.error = event.reason;
+                        }
+                    }
+                }
             }
         }
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(loginPageTemplate, this.props);
     }
 }

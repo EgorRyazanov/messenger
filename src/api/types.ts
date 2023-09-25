@@ -1,15 +1,16 @@
-export enum API_METHODS {
-    GET = "GET",
-    POST = "POST",
-    DELETE = "DELETE",
-    PUT = "PUT",
+export enum ApiMethods {
+    Get = "get",
+    Post = "post",
+    Delete = "delete",
+    Put = "put",
+    Patch = "patch",
 }
 
-export type TConfig = {
-    data?: any;
+export type Config = {
+    data?: unknown;
     timeout?: number;
-    method: API_METHODS;
-    headers: {
+    method?: ApiMethods;
+    headers?: {
         [key in string]: string;
     };
 };

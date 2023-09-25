@@ -1,0 +1,45 @@
+@use "../../styles/_variables.scss" as vars;
+
+.modal__portal {
+    overflow-y: hidden;
+}
+
+.modal__container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: vars.$on-surface;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+
+    // Должен перекрывать все на странице.
+    z-index: 100;
+}
+
+.modal {
+    background-color: vars.$gray-color-light;
+    border-radius: 12px;
+    box-shadow: vars.$box-shadow;
+}
+
+.cancel-button {
+    background-color: transparent;
+    color: vars.$base-text-color;
+    margin-left: auto;
+    width: fit-content;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.cancel-button:hover {
+    background-color: transparent;
+    color: vars.$primary-color;
+}
+
+.modal__cancel-button-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+}

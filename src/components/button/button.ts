@@ -3,7 +3,7 @@ import { Block } from "../../utils/block.ts";
 
 interface ButtonProps {
     text: string;
-    events?: Record<string, (args: any) => void>;
+    events?: Record<string, (args: unknown) => void>;
     type?: string;
     classNames?: string;
 }
@@ -19,7 +19,7 @@ export class ButtonComponent extends Block<ButtonProps> {
         super(props);
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile('<button type={{type}} class="primary-button {{classNames}}">{{text}}</button>', this.props);
     }
 }

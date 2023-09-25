@@ -1,10 +1,14 @@
-import { registerPageTemplate } from "./register-page.tmpl.ts";
+import { registerPageTemplate } from "./registration-page.tmpl.ts";
 import { ButtonComponent } from "../../components/button/index.ts";
 import { InputComponent } from "../../components/input/index.ts";
 import { LinkComponent } from "../../components/link/index.ts";
 import { Block } from "../../utils/block.ts";
 import { FormComponent } from "../../components/form/index.ts";
 import { validateEmail, validateLogin, validateNames, validatePassword, validatePhone } from "../../utils/validate.ts";
+import { RegistrationDto } from "../../core/DTO/auth/registration.dto.ts";
+import { CustomError } from "../../core/models/error.ts";
+import AuthController from "../../controllers/auth-controller.ts";
+import { Routes } from "../../index.ts";
 
 export class RegistrationPage extends Block {
     public constructor(props = {}) {
@@ -12,7 +16,7 @@ export class RegistrationPage extends Block {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    protected init() {
+    protected init(): void {
         const inputs = [
             new InputComponent({
                 name: "email",
@@ -51,45 +55,36 @@ export class RegistrationPage extends Block {
         this.children.form = new FormComponent({
             inputs,
             events: formEvents,
-            link: new LinkComponent({ text: "Войти", url: "/login" }),
+            link: new LinkComponent({ text: "Войти", url: Routes.Main }),
             title: "Регистрация",
             button: new ButtonComponent({ text: "Зарегистрироваться", type: "submit" }),
         });
     }
 
-    private handleValidateForm = (): void => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            this.children.form.validateInputs();
-        }
-    };
-
-    private isRegisterFormValid = (): boolean => {
-        if (this.children.form != null && this.children.form instanceof FormComponent) {
-            return this.children.form.isFormValid();
-        }
-
-        return false;
-    };
-
-    private onSubmit(e: Event) {
+    private async onSubmit(e: Event): Promise<void> {
         e.preventDefault();
         if (e.target != null && e.target instanceof HTMLFormElement) {
-            const formData = new FormData(e.target as HTMLFormElement);
-            const form: Record<string, FormDataEntryValue> = {};
-            for (const [key, value] of formData.entries()) {
-                form[key] = value;
-            }
+            if (this.children.form instanceof FormComponent) {
+                const { form } = this.children;
+                form.props.error = "";
 
-            this.handleValidateForm();
+                form.validateInputs();
+                const values = form.getValues<RegistrationDto>();
 
-            if (this.isRegisterFormValid()) {
-                window.location.href = "/";
-                this.removeEvents();
+                if (form.isFormValid() && values != null) {
+                    try {
+                        await AuthController.register(values);
+                    } catch (event: unknown) {
+                        if (event instanceof CustomError) {
+                            form.props.error = event.reason;
+                        }
+                    }
+                }
             }
         }
     }
 
-    protected render() {
+    protected render(): DocumentFragment {
         return this.compile(registerPageTemplate, this.props);
     }
 }

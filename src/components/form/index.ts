@@ -13,10 +13,11 @@ interface FormProps {
     inputs?: InputComponent[];
     classNames?: string;
     title?: string;
+    error?: string;
 }
 
 export class FormComponent extends Block<FormProps> {
-    constructor({ button, link, events = {}, inputs = [], classNames = "", title = "" }: FormProps) {
+    public constructor({ button, link, events = {}, inputs = [], classNames = "", title = "", error = "" }: FormProps) {
         const props = {
             button,
             link,
@@ -24,6 +25,7 @@ export class FormComponent extends Block<FormProps> {
             classNames,
             title,
             events,
+            error,
         };
         super(props);
     }
@@ -45,7 +47,30 @@ export class FormComponent extends Block<FormProps> {
         return false;
     }
 
-    protected render() {
+    public getValues<T>(): T | null {
+        if (this.children.inputs && Array.isArray(this.children.inputs)) {
+            const object: T = {} as T;
+            (this.children.inputs as InputComponent[]).forEach((input) => {
+                object[input.name as keyof T] = input.value as T[keyof T];
+            });
+            return object;
+        }
+
+        return null;
+    }
+
+    public clearForm(): void {
+        this.props.error = "";
+        if (this.children.inputs && Array.isArray(this.children.inputs)) {
+            this.children.inputs.forEach((input) => {
+                if (input instanceof InputComponent) {
+                    input.setProps({ ...input.props, value: "" });
+                }
+            });
+        }
+    }
+
+    protected render(): DocumentFragment {
         return this.compile(formTemplate, this.props);
     }
 }
