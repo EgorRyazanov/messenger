@@ -2,14 +2,21 @@ import { Routes } from "../index.ts";
 import { Block } from "./block.ts";
 import { Route } from "./route.ts";
 
-class Router {
-    private history: History;
+export class Router {
+    // eslint-disable-next-line no-use-before-define
+    private static __instance?: Router;
 
-    private routes: Route[];
+    private history!: History;
 
-    private _currentRoute: Route | null;
+    private routes!: Route[];
+
+    private _currentRoute!: Route | null;
 
     public constructor(private readonly _rootQuery: string) {
+        if (Router.__instance) {
+            // eslint-disable-next-line no-constructor-return
+            return Router.__instance;
+        }
         this.routes = [];
         this.history = window.history;
         this._currentRoute = null;
@@ -60,6 +67,13 @@ class Router {
 
     private getRoute(pathname: string) {
         return this.routes.find((route) => route.match(pathname));
+    }
+
+    public reset() {
+        delete Router.__instance;
+
+        // eslint-disable-next-line no-new
+        new Router(this._rootQuery);
     }
 }
 
