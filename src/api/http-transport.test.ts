@@ -3,7 +3,7 @@ import { expect } from "chai";
 
 import { HTTPTransport } from "./http-transport.ts";
 
-describe.only("HTTPTransport", () => {
+describe("HTTPTransport", () => {
     let xhr: SinonFakeXMLHttpRequestStatic;
     let instance: HTTPTransport;
     let requests: SinonFakeXMLHttpRequest[] = [];

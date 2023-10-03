@@ -24,11 +24,11 @@ describe("Router", () => {
     const removeEventsFake = sinon.fake.returns(undefined);
 
     class FakeBlock {
-        public getContent = getContentFake;
+        protected getContent = getContentFake;
 
-        public dispatchComponentDidMount = dispatchComponentDidMountFake;
+        protected dispatchComponentDidMount = dispatchComponentDidMountFake;
 
-        public removeEvents = removeEventsFake;
+        protected removeEvents = removeEventsFake;
     }
 
     class RealBlock extends Block {}
