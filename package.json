@@ -48,14 +48,12 @@
         "vite": "^4.3.9"
     },
     "lint-staged": {
-        "./src/**/*.ts": [
+        "*.ts": [
             "npx eslint --fix"
         ],
-        "./src/**/*.scss": [
+        "*.scss": [
             "npm stylelint --fix"
         ]
-
-        
     },
     "dependencies": {
         "handlebars": "^4.7.7"
