@@ -21,6 +21,6 @@ export class EventBus<
 
     public emit<Event extends MapInterface<E>>(event: Event, ...args: Args[Event]): void {
         if (!this.listeners[event]) return;
-        this.listeners[event]!.forEach((l) => l(...args));
+        this.listeners[event]?.forEach((l) => l(...args));
     }
 }

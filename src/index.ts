@@ -10,12 +10,12 @@ import AuthController from "./controllers/auth-controller.ts";
 import "./styles/index.scss";
 
 export enum Routes {
-    Main = "/",
-    Register = "/register",
-    Login = "/login",
+    Main = "/messenger",
+    Register = "/sign-up",
+    Login = "/",
     Profile = "/profile",
-    ProfileEdit = "/profile/edit",
-    ProfileChangePassword = "/profile/change-password",
+    ProfileEdit = "/settings/edit",
+    ProfileChangePassword = "/settings/change-password",
     Error = "/error",
 }
 

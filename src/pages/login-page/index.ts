@@ -8,6 +8,7 @@ import { validateLogin, validatePassword } from "../../utils/validate.ts";
 import { LoginDto } from "../../core/DTO/auth/login.dto.ts";
 import AuthController from "../../controllers/auth-controller.ts";
 import { CustomError } from "../../core/models/error.ts";
+import { Routes } from "../../index.ts";
 
 export class LoginPage extends Block {
     public constructor(props = {}) {
@@ -34,7 +35,7 @@ export class LoginPage extends Block {
         this.children.form = new FormComponent({
             inputs,
             events: formEvents,
-            link: new LinkComponent({ text: "Нет аккаунта?", url: "/register" }),
+            link: new LinkComponent({ text: "Нет аккаунта?", url: Routes.Register }),
             title: "Вход",
             button: new ButtonComponent({ text: "Войти", type: "submit" }),
         });

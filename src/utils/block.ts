@@ -1,9 +1,8 @@
 /* eslint-disable */
-
 import Handlebars from "handlebars";
 import { nanoid } from "nanoid";
 
-import { EventBus } from "./event-bus";
+import { EventBus } from "./event-bus.ts";
 
 export class Block<P extends Record<string, any> = any> {
     private static EVENTS = {
@@ -11,11 +10,16 @@ export class Block<P extends Record<string, any> = any> {
         FLOW_CDM: "flow:component-did-mount",
         FLOW_CDU: "flow:component-did-update",
         FLOW_RENDER: "flow:render",
-    };
+    } as const;
+
     public children: Record<string, Block<any> | Block<any>[]>;
+
     public id = nanoid(6);
+
     public props: P;
+
     private eventBus: () => EventBus;
+
     private _element: HTMLElement | null = null;
 
     public constructor(propsWithChildren: P) {

@@ -1,5 +1,6 @@
 import { Chat } from "../../core/models/chat.ts";
 import { Block } from "../../utils/block.ts";
+import { BASE_IMAGE_URL } from "../../utils/constants.ts";
 import { store } from "../../utils/store.ts";
 import { withSelectedChat } from "../../utils/with-store.ts";
 import { AvatarComponent } from "../avatar/index.ts";
@@ -28,7 +29,7 @@ class ChatsListItem extends Block<ChatsListItemProps> {
         this.children.avatar = new AvatarComponent({
             id: this.props.chat.id.toString(),
             isActive: false,
-            avatar: this.props.chat.avatar ? `https://ya-praktikum.tech/api/v2/resources${this.props.chat.avatar}` : null,
+            avatar: this.props.chat.avatar ? `${BASE_IMAGE_URL}${this.props.chat.avatar}` : null,
             inputContainerClasses: "chat__avatar",
         });
     }

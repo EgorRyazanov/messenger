@@ -2,6 +2,7 @@ import API, { ChatsAPI } from "../api/chats.ts";
 import { isServerError } from "../core/DTO/server-error.dto.ts";
 import { ChatMapper } from "../core/mappers/chat.mapper.ts";
 import { ErrorMapper } from "../core/mappers/error.mapper.ts";
+import { UserMapper } from "../core/mappers/user.mapper.ts";
 import { Chat } from "../core/models/chat.ts";
 import { User } from "../core/models/user.ts";
 import { store } from "../utils/store.ts";
@@ -81,6 +82,11 @@ class ChatsController {
         await this.api.delete(id);
 
         this.fetchChats();
+    }
+
+    public async getChatUsers(id: Chat["id"]): Promise<User[]> {
+        const usersDto = await this.api.getUsers(id);
+        return usersDto.map((userDto) => UserMapper.fromDto(userDto));
     }
 
     public getToken(id: Chat["id"]): Promise<string> {

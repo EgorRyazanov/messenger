@@ -2,6 +2,7 @@ import { BaseAPI } from "./base.ts";
 import { User } from "../core/models/user.ts";
 import { ChatDto } from "../core/DTO/chat.dto.ts";
 import { Chat } from "../core/models/chat.ts";
+import { UserDto } from "../core/DTO/user.dto.ts";
 
 export class ChatsAPI extends BaseAPI {
     public constructor() {
@@ -20,11 +21,11 @@ export class ChatsAPI extends BaseAPI {
         return this.http.get("/", { data });
     }
 
-    public getUsers(id: number): Promise<User[]> {
+    public async getUsers(id: Chat["id"]): Promise<UserDto[]> {
         return this.http.get(`/${id}/users`);
     }
 
-    public addUsers(id: number, users: User["id"][]): Promise<unknown> {
+    public addUsers(id: Chat["id"], users: User["id"][]): Promise<unknown> {
         return this.http.put("/users", { data: { users, chatId: id } });
     }
 
@@ -32,7 +33,7 @@ export class ChatsAPI extends BaseAPI {
         return this.http.delete("/users", { data: { users, chatId: id } });
     }
 
-    public async getToken(id: number): Promise<string> {
+    public async getToken(id: Chat["id"]): Promise<string> {
         const response = await this.http.post<{ token: string }>(`/token/${id}`);
 
         return response.token;
