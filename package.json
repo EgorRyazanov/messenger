@@ -47,14 +47,6 @@
         "typescript": "^5.1.6",
         "vite": "^4.3.9"
     },
-    "lint-staged": {
-        "*.ts": [
-            "npx eslint --fix"
-        ],
-        "*.scss": [
-            "npm stylelint --fix"
-        ]
-    },
     "dependencies": {
         "handlebars": "^4.7.7"
     },
