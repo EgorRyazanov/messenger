@@ -11,13 +11,7 @@
         "stylelint": "stylelint \"**/*.scss\" --fix",
         "lint": "npx eslint \"**/*.ts\" --fix",
         "test": "mocha",
-        "prepare": "husky install",
-        "pre-commit": "npm run test && npm run lint && npm run stylelint"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "npm run precommit"
-        }
+        "prepare": "husky install"
     },
     "lint-staged": {
         "./src/**/*.ts": "npm run lint",
